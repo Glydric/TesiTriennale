@@ -9,6 +9,12 @@
 \nocite{*}
 \bibliography{biblio.bib} %or \addbibresource{biblio.bib}
 \graphicspath{{Immagini}}
+\lstset{
+    % basicstyle=\ttfamily,
+    % postbreak=\raisebox{0ex}[0ex][0ex]{\BeginAccSupp{ActualText={}}\ensuremath{\color{gray}\hookrightarrow\space}\EndAccSupp{}},
+    columns=fullflexible,
+    breaklines=true
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TESI DATI FRONTESPIZIO
@@ -48,9 +54,10 @@
     \input{introduzione}
 
     \input{1}
-    \input{Esempio}
-
+    \input{2}
     \input{implementazione}
+    
+    \input{Esempio}
 \makeatother
 
 % \appendix

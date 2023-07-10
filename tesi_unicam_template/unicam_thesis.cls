@@ -5,6 +5,9 @@
 % Francesco De Angelis <francesco.deangelis@unicam.it
 % -----------------------------------------------------------------------------
 
+% Glydric's commands
+\newcommand{\importImage}[1]{\begin{figure}[htpb!]\centering #1 \end{figure}}
+
 % -----------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{unicam_thesis}[2010/06/30 - LaTeX class for composing thesis at 
