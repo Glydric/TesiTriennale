@@ -1,7 +1,15 @@
 \documentclass{unicam_thesis}
+
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
-%\usepackage[backend=bibtex]{biblatex}
+\usepackage[inkscapeformat=png]{svg}
+\usepackage[backend=bibtex]{biblatex}
+
+% config
+\nocite{*}
+\bibliography{biblio.bib} %or \addbibresource{biblio.bib}
+\graphicspath{{Immagini}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TESI DATI FRONTESPIZIO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,7 +19,6 @@
 \university{Universit\`a degli Studi di Camerino}%
 \school{Scienze e Tecnologie}%
 \course{Laurea in Informatica (Classe L-31)}%
-
 
 \author{Leonardo Migliorelli}%
 \advisor{Fausto Marcantoni}%
@@ -25,29 +32,28 @@
 
 \makeindex
 \theoremstyle{definition} \newtheorem{esempio}{Esempio}[chapter]
-\theoremstyle{definition}
-\newtheorem{definizione}{Definizione}[chapter] \theoremstyle{plain}
-\newtheorem{teorema}{Teorema}[chapter]
+\theoremstyle{definition} \newtheorem{definizione}{Definizione}[chapter]
+\theoremstyle{plain} \newtheorem{teorema}{Teorema}[chapter]
 
-\graphicspath{{Screenshot/},{Immagini/},{API/},{Source/}}
-\bibliography{biblio.bib}
-%\addbibresource{biblio.bib}
+
 \begin{document}
-
 \maketitle
+
 \tableofcontents
 \lstlistoflistings
 \listoffigures
 \listoftables
 
-\input{introduzione}
-\input{Capitolo1}
-\input{Capitolo2}
-\input{Capitolo3}
-\input{implementazione}
+\makeatletter \def\input@path{{Capitoli/}}
+    \input{introduzione}
 
+    \input{1}
+    \input{Esempio}
 
-\appendix
+    \input{implementazione}
+\makeatother
+
+% \appendix
 %\input{schema_elettrico}
 %\input{Appendix1}
 %\input{Appendix2}
@@ -56,6 +62,6 @@
 
 \printindex
 
-\include{ringraziamenti}
+\input{Capitoli/ringraziamenti}
 
 \end{document}
