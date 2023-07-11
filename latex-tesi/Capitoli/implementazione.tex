@@ -17,27 +17,55 @@ Precedentemente venivano usati i primi 80 bit dell'hash (SHA1) della chiave pubb
 In totale il nuovo hostname possiede 56 caratteri \cite{Torv3} \\
 Un esempio è l'indirizzo \emph{pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion}, una volta decriptato sfruttando il base32 definito nell' RFC 3548 e 4648 abbiamo la seguente stringa 79bcc625184b05194975c28b66b66b0469f7f6556fb1ac3189a79b40dda32f1f214703, come notiamo termina con 03, il byte di versione
 
+\section{Studio delle tecnologie}
+
+Per creare un servizio sulla rete onion si possono usare una moltitudine di tecnologie differenti, ogni singolo aspetto necessita di effettuare delle scelte. \\
+\begin{itemize}
+    \item Deploy del Server, la prima scelta ricade sulla creazione del server e in particolare scegliere dove eseguire il deploy, ci sono molteplici motivi per usare un servizio cloud, tra cui la sicurezza e la facilità d'uso. Ci sono 3 principali competitor e molti altri secondari che per la maggior parte sfruttano i server di queste 3 aziende
+    \begin{itemize}
+        \item Microsoft Azure
+        \item Google Cloud
+        \item Amazon Web Service, il più importante servizio cloud, è gestito e reso disponibile da Amazon e possiede molti servizi tra cui scegliere. Per questa implementazione useremo il servizio EC2 messo a disposizione da AWS in una macchina t3.micro
+    \end{itemize}
+    \item SO, la seconda scelta ricade sul sistema operativo della nostra macchina. Debian in particolare ha molti vantaggi, tra cui 
+    \begin{itemize}
+        \item Leggerezza, affidabilità e sicurezza derivate da un sistema GNU/Linux
+        \item Maggiore utilizzo in ambienti server
+        \item Nessun costo aggiuntivo derivato dall'aquisto di una licenza d'uso come Windows server
+    \end{itemize}
+    Useremo in particolare la versione 11
+    \item Web Server, abbiamo due web server principali 
+    \begin{itemize}
+        \item Apache httpd, il più vecchio dei due, rilasciato con licenza Apache 2.0
+        \item Nginx, un web server più moderno che fornisce diversi altri strumenti oltre al web server, tra cui il proxy e load balancer, è gratuito e come httpd è open source, ha superato apache da un paio di anni. Viene anche utilizzato in container docker, ma noi lo useremo in una classica macchina virtuale.
+    \end{itemize}
+\end{itemize}
+
+
+
+
 \section{Creazione del servizio}
+
 Per questa implementazione verrà usato il servizio di macchina virtuale (EC2) con Debian 11 messo da Amazon Web Service tramite il web server nginx \\
 Il primissimo passo fondamentale è aggiungere alla macchina i giusti security group, altrimenti la connessione non sarebbe possibile
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{securityGroup1}
-    \caption{security Group 1, ssh in entrata}
-    \label{fig:sec1}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{securityGroup2}
-    \caption{security Group 2, TCP in uscita}
-    \label{fig:sec2}
-\end{figure}
 
 \begin{itemize}
-    \item Consentire la connessione ssh alla porta 22 \ref{fig:sec1}
-    \item Consentire il traffico TCP in uscita \ref{fig:sec2}
+    \item Consentire la connessione ssh alla porta 22
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{securityGroup1}
+        \caption{security Group 1, ssh in entrata}
+        \label{fig:sec1}
+    \end{figure}
+    
+    \item Consentire il traffico TCP in uscita
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{securityGroup2}
+        \caption{security Group 2, TCP in uscita}
+        \label{fig:sec2}
+    \end{figure}
 \end{itemize}
 
 È inoltre importante creare una coppia chiave pubblica/privata, useremo la chiave privata con formato *.pem per tentare la connessione

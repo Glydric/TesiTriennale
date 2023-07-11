@@ -44,6 +44,11 @@ Quando B deve rispondere al pacchetto usa Ka per criptare il messaggio e $K1(R1,
 $K1( R1, A ), Ka( R0, M ) => A, R1( Ka( R0, M ) )$ \\
 Con questo sistema B può rispondere ad A, non conoscendo il vero indirizzo di A, il mix non conosce il contenuto del messaggio ma conosce l'indirizzo di destinazione e A è l'unico che può decriptare il contenuto del messaggio \\
 Da considerare che M1 è il primo mix nel percorso da A a B, mentre tra M1 e B possono esserci N nodi ed il messaggio può quindi essere criptato più volte nel percorso da B a M1 \\
-M1 viene quindi considerato un nodo di uscita dalla rete dato che è l'unico che conosce il vero indirizzo di destinazione 
+M1 viene quindi considerato un nodo di uscita dalla rete dato che è l'unico che conosce il vero indirizzo di destinazione \\
+Nelle Mix Networks abbiamo un ente centrale che possiede una lista di pseudonimi creati dagli utenti. Quando un utente vuole creare il proprio pseudonimo invia la richiesta all'ente che decide se accettare la richiesta, solo allora lo aggiunge alla lista. \\
+La richiesta contiene una chiave pubblica che agisce da pseudonimo, viene usata per verificare le firme generate dall'utente tramite la relativa chiave privata 
+Le richieste all'ente possono essere inviate in maniera anonima, sfruttando un email non tracciabile o un'altro sistema. \\
+
+
 
 \cite{ChaumMixes}
