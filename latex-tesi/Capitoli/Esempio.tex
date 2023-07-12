@@ -1,20 +1,8 @@
 \chapter{Capitolo Esempio}
 \label{chap:CapitoloEsempio}
 
-Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullamco laboriosam, nisi ut aliquid ex ea commodi consequatur. Duis aute irure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-In questo capitolo andremo a discutere ...
-  
 \section{Sezione Esempio}
 \label{sec:real-time}
-Quello in Figura \ref{fig:rocker}  (esempio di riferimento a figura) ...
-
-% \begin{figure}[htpb!]
-%   \centering
-%   \includegraphics[width=0.5\textwidth]{Rockerduck}
-%   \caption{Esempio di figura}
-%   \label{fig:rocker}
-% \end{figure}
 
 Esempio elenco puntato ...
 \begin{itemize}
@@ -22,15 +10,15 @@ Esempio elenco puntato ...
 	\item item 2
 	\item item 3
 \end{itemize}
-
-
-\section{Section2}
+Esempio elenco numerato ...
+\begin{enumerate}
+	\item item 1
+	\item item 2
+	\item item 3
+\end{enumerate}
 
 \subsection{Subsection Esempio}
-\label{sec:handshake}
-
-\subsection{Subsection Esempio}
-\label{sec:handshake}
+\label{sec:es}
 
 \begin{lstlisting}[caption={Esempio di listing}, style=javaScriptCode]
 	GET /chat HTTP/1.1
@@ -43,6 +31,10 @@ Esempio elenco puntato ...
 	Sec-WebSocket-Version: 13
 \end{lstlisting} 
 
+\footnote{\url{https://github.com/Glydric/TesiTriennale}} (Esempio di link in footnote).
+
+\newpage
+nuova pagina
 
 \begin{table}[htbp]
 	\begin{center}
@@ -64,35 +56,6 @@ Esempio elenco puntato ...
 	\label{tab:browser}
 \end{table}
 
-\begin{table}[htbp]
-	\begin{center}
-		\begin{tabular}{|l|l|l|l|l|l|}
-			\hline
-			Versione & Android & Firefox Mob. & IE Mob. & Opera Mob. & Safari Mob.\\
-			\hline
-			76 & ? & ? & ? & ? & ?\\
-			\hline
-			7 & ? & ? & ? & ? & ? \\
-			\hline
-			10 & ? & 7.0 & ? & ? & ?\\
-			\hline
-			RFC 6455 & 16(Chrome) & 11.0 & ? & 12.10 & 6.0\\
-			\hline
-		\end{tabular}
-	\end{center}
-	\caption{Esempio di Tabella}
-	\label{tab:mobile}
-\end{table}
-Nelle Tabelle \ref{tab:browser} e \ref{tab:mobile} è possibile vedere, rispettivamente per desktop e per mobile, il supporto dei vari browser per le diverse specifiche delle WebSocket.
-Il codice completo dell'esempio è disponibile sul mio GitHub\footnote{\url{https://github.com/Glydric/TesiTriennale}} (Esempio di link).
+% il riferimento può essere fatto con qualsiasi \label
+riferimento tabella \ref{tab:browser}
 
-\section{Qui}
-
-
-Ciao Ciao
-
-\newpage
-Ciao Ciao
-
-
-Ciao Ciao
