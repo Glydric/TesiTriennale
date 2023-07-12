@@ -116,8 +116,9 @@ Generiamo il torrc file che ci servirà per impostare tutti i parametri di confi
 \begin{lstlisting}
     sudo tor -f /etc/tor/torrc
 \end{lstlisting}
-Apriamo il file e togliamo il commento alle righe \lstinline{HiddenServicePort 80 127.0.0.1:80} e \lstinline{HiddenServiceDir *}, il primo ci serve per indicare la directory in cui si trovano le informazioni del sito e le chiavi crittografiche, il secondo indica che il traffico arrivato dalla porta virtuale (80), che gli utenti onion useranno per la connessione, viene reindirizzato alla porta 80 del localhost, ovvero la porta in cui è in ascolto il web server nginx. \\
-Riavviamo tor per assicurarci che il file di configurazione torrc non abbia errori
+Apriamo il file e togliamo il commento alle righe \lstinline{HiddenServicePort 80 127.0.0.1:80} e \lstinline{HiddenServiceDir /var/lib/tor/hidden_service}, il primo indica che il traffico arrivato dalla porta virtuale (80), il secondo ci serve per indicare la directory in cui si trovano le informazioni del sito e le chiavi crittografiche, che gli utenti onion useranno per la connessione, viene reindirizzato alla porta 80 del localhost, ovvero la porta in cui è in ascolto il web server nginx. \\
+Riavviamo tor per aggiornare la configurazione di tor, assicurarci che il file di configurazione torrc non contenga errori e che il sistema sia funzionante
+% HiddenServiceDir /var/lib/tor/hidden_service/
 \begin{lstlisting}
     sudo systemctl restart tor
 \end{lstlisting}
@@ -144,5 +145,31 @@ Infine riavviamo tor, se tutto è andato a buon fine il servizio dovrebbe essere
 \importImage{
     \label{fig:nginxConnection} 
     \includegraphics[width=\textwidth]{connectionSucceeded}
+    \caption{Connessione al web server nginx}
+}
+
+\newpage
+
+Ora che il servizio è attivo e disponibile possiamo iniziare a configurarlo a nostro piacimento, la prima cosa che potremmo voler fare è cambiare l'hostname impostandone uno personalizzato, almeno in parte, un'esempio è il sito email di proton \textbf{protonmail}rmez3lotccipshtkleegetolb73fuirgj7r4o4vfu7ozyd.onion \\
+Vi sono diversi strumenti per fare quest'operazione, si sfrutta la tecnica del brute force per generare chiavi ed indirizzi casuali fino a trovarne uno inizia con il termine che abbiamo scelto, potrebbe impiegare diverso tempo ed è consigliabile usare un computer più potente della nostra macchina virtuale. 
+Per questa implementazione useremo il tool mkp224o \cite{V3AddressGeneratorRepo}, possiamo installarlo su linux o usarlo su windows da riga di comando semplicemente indicando il nome con cui dovrà iniziare
+
+\begin{lstlisting}
+    mkp224o tesilm
+\end{lstlisting}
+    
+Dopo poco tempo otteniamo il nuovo indirizzo del server \lstinline{tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion} con le relative chiavi \\
+Possiamo copiarle sul server tramite scp assieme all'opzione -i per usare il file d'identità per la connessione
+    
+\begin{lstlisting}
+    cd 3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion 
+    scp -i key.pem * admin@ec2-15-161-198-133.eu-south-1.compute.amazonaws.com:~/var/lib/tor/hidden_service
+\end{lstlisting}
+
+Tornando sul server riavviamo tor 
+
+\importImage{
+    \label{fig:customAddressConnection} 
+    \includegraphics[width=\textwidth]{connectionCustomAddress}
     \caption{Connessione al web server nginx}
 }
