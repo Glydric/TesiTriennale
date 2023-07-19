@@ -186,8 +186,9 @@ Ora che il servizio è attivo e disponibile possiamo iniziare a configurarlo a n
 Vi sono diversi strumenti per fare quest'operazione, si sfrutta la tecnica del brute force per generare chiavi ed indirizzi casuali fino a trovarne uno inizia con il termine che abbiamo scelto, potrebbe impiegare diverso tempo ed è consigliabile usare un computer più potente della nostra macchina virtuale. 
 Per questa implementazione useremo il tool mkp224o \cite{V3AddressGeneratorRepo}, possiamo installarlo su linux o usarlo su windows da riga di comando semplicemente indicando il nome con cui dovrà iniziare
 
+\footnote{Il file viene avviato direttamente dalla cartella del sorgente, per cui apponiamo \lstinline{./}}
 \begin{lstlisting}
-    mkp224o tesilm
+    ./mkp224o tesilm
 \end{lstlisting}
     
 Da notare che più caratteri si scelgono nel matching più il software impiegerà nella generazione di un dominio. Otteniamo il nuovo indirizzo del server\footnote{tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion} con le relative chiavi \\
@@ -214,6 +215,19 @@ Avviamo la connessione al server e riavviamo tor per impostare le modifiche
 
 \newpage
 
-\subsection{Index Site}
+\subsection{Far conoscere il sito}
 Un'altra caratteristica importante per ogni sito è la capacità di essere ricercato tramite un motore di ricerca, ci sono diversi motori che eseguono l'indexing. Tra questi c'è notevil\footnote{http://notevilmtxf25uw7tskqxj6njlpebyrmlrerfv5hc4tuq7c7hilbyiqd.onion} funziona come un classico motore di ricerca, a differenza di altri motori come Torch che invece esegue la ricerca più in base al contenuto che all'url\footnote{Un test di ricerca di 'proton mail' in entrambi mostra solo notEvil restituirci il sito corretto} \\
-In NotEvil possibile contattare gli amministratori del motore per richiedere l'aggiunta di un sito. Dalla pagina ufficiale è infatti presente il pulsante di contatto, dopo un breve controllo ci permette di inviare una richiesta anonima e solo dopo una conferma il sito sarà analizzato ed aggiunto
+In NotEvil è possibile contattare gli amministratori del motore per richiedere l'aggiunta di un sito. Dalla pagina ufficiale è infatti presente il pulsante di contatto, dopo un breve controllo ci permette di inviare una richiesta anonima cosi che il sito possa essere analizzato ed aggiunto\\
+Un'altro sistema per far conoscere il sito agli utenti finali è l'utilizzo di siti specializzati come OnionDir\footnote{https://oniondiricuc4x2y5qbucg4jyp2ael5rxy7aahy5f4fbars2jkkf7vad.onion.nz} che permette di aggiungere il proprio sito in maniera completamente anonima. \\
+In questo caso basta cliccare sul tasto \lstinline{Add Link} nella toolbar in alto. \\
+\importImage{
+    \label{fig:OnionDir}
+    \includegraphics[width=\textwidth]{OnionDirMain}
+    \caption{OnionDir, Pagina iniziale}
+}
+A questo punto possiamo inserire l'url e una piccola descrizione, come NotEvil il sito sarà scansionato per evitare truffe o contenuti proibiti, come indicato nelle poche righe di descrizione dei termini del servizio. \\
+\importImage{
+    \label{fig:OnionDirForm}
+    \includegraphics[width=\textwidth]{OnionDirForm}
+    \caption{OnionDir, Form aggiunta sito}
+}
