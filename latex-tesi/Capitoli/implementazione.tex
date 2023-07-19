@@ -190,8 +190,8 @@ Per questa implementazione useremo il tool mkp224o \cite{V3AddressGeneratorRepo}
     mkp224o tesilm
 \end{lstlisting}
     
-Dopo poco tempo otteniamo il nuovo indirizzo del server tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion con le relative chiavi \\
-Possiamo copiarle sul server tramite scp assieme all'opzione -i per usare il file d'identità per la connessione
+Da notare che più caratteri si scelgono nel matching più il software impiegerà nella generazione di un dominio. Otteniamo il nuovo indirizzo del server\footnote{tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion} con le relative chiavi \\
+Possiamo copiarle sul server con scp usando l'opzione -i per definire il file d'identità, come facciamo con ssh
     
 \begin{lstlisting}
     cd tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion
@@ -211,3 +211,9 @@ Avviamo la connessione al server e riavviamo tor per impostare le modifiche
     \includegraphics[width=\textwidth]{connectionCustomAddress}
     \caption{Connessione con il nuovo url}
 }
+
+\newpage
+
+\subsection{Index Site}
+Un'altra caratteristica importante per ogni sito è la capacità di essere ricercato tramite un motore di ricerca, ci sono diversi motori che eseguono l'indexing. Tra questi c'è notevil\footnote{http://notevilmtxf25uw7tskqxj6njlpebyrmlrerfv5hc4tuq7c7hilbyiqd.onion} funziona come un classico motore di ricerca, a differenza di altri motori come Torch che invece esegue la ricerca più in base al contenuto che all'url\footnote{Un test di ricerca di 'proton mail' in entrambi mostra solo notEvil restituirci il sito corretto} \\
+In NotEvil possibile contattare gli amministratori del motore per richiedere l'aggiunta di un sito. Dalla pagina ufficiale è infatti presente il pulsante di contatto, dopo un breve controllo ci permette di inviare una richiesta anonima e solo dopo una conferma il sito sarà analizzato ed aggiunto

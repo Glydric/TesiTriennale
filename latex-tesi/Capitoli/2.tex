@@ -82,6 +82,7 @@ Questo design ha qualche problema derivato dal fatto che più OP potrebbero sceg
 I directory server sono un piccolo sottogruppo di onion router utilizzati per tracciare i cambiamenti nella topologia di rete. In particolare un directory server agisce come un server HTTP accessibile dai client per ottenere lo stato della rete e la lista dei router aggiornata periodicamente dagli stessi OR. Il software di accesso alla rete onion è precaricato con le informazioni sui directory server e le relative chiavi \\
 Quando il directory server riceve un aggiornamento da un OR prima di tutto controlla la chiave d'identità del router, garantendo che un attaccante non possa fingersi un OR manomettendo la rete \cite{ChaumMixes}
 \section{Vulnerabilità} %Qui si parla delle vulnerabilità di onion v2 per cui si è passati a v3
-Una delle maggiori vulnerabilità della rete tor è la possibilità per un servizio web di creare un codice JavaScript eseguito sul browser dell'utente che è in grado di ottenere informazioni sull'indirizzo dell'utente deanonimizzandolo. Gli sviluppatori di Tor hanno inserito appositamente un sistema di sicurezza in tor che blocca ogni script di default
+Una delle maggiori vulnerabilità della rete tor è la possibilità per un servizio web di creare un codice JavaScript eseguito sul browser dell'utente che è in grado di ottenere informazioni sull'indirizzo dell'utente deanonimizzandolo. Gli sviluppatori di Tor hanno inserito appositamente un sistema di sicurezza nel browser che blocca ogni script di default
 
 \section{Tor Browser}
+% TODO parla dei tor relay in maniera più specifica

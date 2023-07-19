@@ -33,7 +33,7 @@ In particolare abbiamo chiave pubblica K e chiave privata P, abbiamo inoltre
     \item P(x) la funzione che cripta x con la chiave privata, può solo essere decriptato con la chiave K
 \end{itemize}
 Abbiamo quindi $P(K(x)) = K(P(x)) = x$ \\
-Con questa tecnica però qualcuno potrebbe determinare il contenuto di un messaggio creando una copia identica in quanto $y = x → K(y) = K(x)$, per risolvere questo problema si esegue la crittografia del messaggio inserendo una stringa casuale R ottenendo quindi chiavi sempre diverse tramite le funzioni $K(x,R)$ e $P(x,R)$, questa tecnica è chiamata sealing \\
+Con questa tecnica però qualcuno potrebbe determinare il contenuto di un messaggio creando una copia identica in quanto $y = x -> K(y) = K(x)$, per risolvere questo problema si esegue la crittografia del messaggio inserendo una stringa casuale R ottenendo quindi chiavi sempre diverse tramite le funzioni $K(x,R)$ e $P(x,R)$, questa tecnica è chiamata sealing \\
 In una rete questo sistema viene implementato in maniera ridondante, il messaggio M viene criptato insieme a una stringa casuale R con la chiave pubblica del destinatario Kb, il tutto viene criptato assieme all'indirizzo B e a una stringa casuale R1 con la chiave pubblica K1 del nodo 1, questo processo potrebbe essere esteso con N nodi (mix) rendendo quindi la rete molto sicura \ 
 $K1(R1, Kb(R0, M), B)$ \\
 Quando il nodo 1 riceve il pacchetto lo decripta con la sua chiave privata scartando R1 ottiene $Ka(R0, M), B$. Inoltra quindi il nuovo pacchetto a B \\
@@ -48,7 +48,5 @@ M1 viene quindi considerato un nodo di uscita dalla rete dato che è l'unico che
 Nelle Mix Networks abbiamo un ente centrale che possiede una lista di pseudonimi creati dagli utenti. Quando un utente vuole creare il proprio pseudonimo invia la richiesta all'ente che decide se accettare la richiesta, solo allora lo aggiunge alla lista. \\
 La richiesta contiene una chiave pubblica che agisce da pseudonimo, viene usata per verificare le firme generate dall'utente tramite la relativa chiave privata 
 Le richieste all'ente possono essere inviate in maniera anonima, tramite una mail non tracciabile o un'altro sistema. \\
-
-
-
 \cite{ChaumMixes}
+
