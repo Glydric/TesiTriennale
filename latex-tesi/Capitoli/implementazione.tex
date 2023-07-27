@@ -1,8 +1,8 @@
 \chapter{Implementazione}
 
 \section{Servizi Onion}
-Nelle comuni reti internet i servizi vengono utilizzati facendo richie basate sugli indirizzi IP pubblici, la sorgente e destinazione di un pacchetto è quindi conosciuta da tutti i dispositivi che la ricevono. 
-Onion invece garantisce l'anonimato non solo ai clienti ma anche agli utenti che mettono a disposizione i server per fornire servizi, nascondendone l'indirizzo IP. 
+Nelle comuni reti internet i servizi vengono utilizzati facendo richieste basate sugli indirizzi IP pubblici, la sorgente e destinazione di un pacchetto è quindi conosciuta da tutti i dispositivi che la ricevono. 
+Onion invece garantisce l'anonimato non solo agli utenti ma anche ai servizi, nascondendone l'indirizzo IP. 
 Questo viene fatto tramite uno pseudonimo di lungo termine, identico in tutti i circuiti e stabile anche al un fallimento di un router \\
 I principali obiettivi sono
 \begin{itemize}
@@ -14,36 +14,37 @@ La creazione di un servizio onion passa per diversi punti prima di poter essere 
     \item Genera una coppia di chiave pubblica e privata per identificarsi
     \item Definisce alcuni onion router come punti di ingresso nella rete, da cui riceverà le richieste dei clienti e invia loro la chiave pubblica
     \item Crea un circuito con ogni punto di ingresso
-    \item Invia al servizio di lookup onion le informazioni sui punti d'ingresso e l'hash della chiave pubblica che sarà usata come hostname
+    \item Invia al servizio di lookup onion le informazioni sui punti d'ingresso e l'hash della chiave pubblica che sarà usata come hostname\ref{sec:DirectoryServers}
 \end{enumerate}
 Quando un utente tenta la connessione
 \begin{enumerate}
-    \item Inizialmente esegue il lookup del dominio
+    \item Inizialmente esegue il lookup del dominio tramite un directory server
     \item Successivamente sceglie un OR come tramite per il servizio e genera un circuito verso di esso, sfruttando uno specifico cookie per identificare il servizio
     \item Viene generato uno stream verso uno dei punti d'ingresso del servizio con tutte le informazioni riguardo se stesso, il nodo tramite e il cookie. Tutto viene criptato con la chiave pubblica del servizio
     \item Inizia l'handshake di Diffle-Hellman tra OP e servizio
     \item Il servizio onion a sua volta genera un circuito verso il nodo tramite per poter rispondere all'OP con la seconda parte dell'handshake
     \item Il nodo tramite collega i due circuiti generando un circuito dati bidirezionale 
 \end{enumerate}
-Sia l'utente che il server non vengono modificati e il server non è nemmeno a corrente che il suo traffico viaggia per una rete onion \cite{ChaumMixes}
+Sia il programma dell'utente che il web server non vengono modificati e non sono nemmeno a corrente che il traffico viaggia per una rete onion \cite{ChaumMixes}
 \section{Onion V3}
-
 La terza generazione di onion nasce per risolvere alcuni problemi di sicurezza. In particolare rispetto alla seconda generazione
 \begin{itemize}
-    \item Vengono aggiornati i sistemi di crittografia, da SHA1/DH/RSA1024 a SHA3/ed25519/curve25519
-    \item Vengono migliorati i directory server e il directory protocol
-    \item Viene cambiato il sistema di hostname
+    \item Sono stati aggiornati i sistemi di crittografia, da SHA1/DH/RSA1024 a SHA3/ed25519/curve25519
+    \item Sono stati migliorati i directory server e il directory protocol
+    \item È stato cambiato il sistema di hostname. Precedentemente venivano usati i primi 80 bit dell'hash (SHA1) della chiave pubblica per creare l'hostname\footnote{un esempio \textbf{yyhws9optuwiwsns.onion}}, nella terza generazione vengono codificati in base32
+    \begin{itemize}
+        \item La chiave pubblica, un totale di 32 byte in ed25519
+        \item Il checksum di 2 byte
+        \item Un byte di versione, di default '\textbackslash x03' 
+    \end{itemize}
+    In totale il nuovo hostname possiede 56 caratteri\footnote{esempio l'indirizzo \emph{pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion}, se proviamo a decodificarlo otteniamo la stringa 79bcc625184b05194975c28b66b66b0469f7f6556fb1ac3189a79b40dda32f1f214703, come notiamo termina con 03, il byte di versione}
 \end{itemize}
-Precedentemente venivano usati i primi 80 bit dell'hash (SHA1) della chiave pubblica per creare un'hostname, un esempio yyhws9optuwiwsns.onion, nella terza generazione vengono codificati in base32
-\begin{itemize}
-    \item La chiave pubblica, un totale di 32 byte in ed25519
-    \item Il checksum di 2 byte
-    \item Un byte di versione, di default '\textbackslash x03' 
-\end{itemize}
-In totale il nuovo hostname possiede 56 caratteri \cite{Torv3} \\
-Un esempio è l'indirizzo \emph{pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion}, una volta decriptato sfruttando il base32 definito nell' RFC 3548 e 4648 abbiamo la seguente stringa 79bcc625184b05194975c28b66b66b0469f7f6556fb1ac3189a79b40dda32f1f214703, come notiamo termina con 03, il byte di versione
-\section{Studio delle tecnologie}
+Inoltre l'indirizzo v3 contenendo l'intera chiave pubblica, una volta decodificato\footnotemark[2] in base32\footnote{Definito nell'RFC 3548 e 4648} ci ritorna tutte le informazioni necessarie per connettersi al servizio. \\
+\cite{Torv3}
 
+\newpage
+\section{Studio delle tecnologie}
+% TODO fig grammatico e migliorare la scrittura
 Per creare un servizio sulla rete onion si possono usare una moltitudine di tecnologie differenti, ogni singolo aspetto necessita di effettuare delle scelte. \\
 \begin{itemize}
     \item Deploy del Server, la prima scelta ricade sulla creazione del server e in particolare scegliere dove eseguire il deploy, ci sono molteplici motivi per usare un servizio cloud, tra cui la sicurezza e la facilità d'uso. Ci sono 3 principali competitor e molti altri secondari che per la maggior parte sfruttano i server di queste 3 aziende
@@ -65,8 +66,6 @@ Per creare un servizio sulla rete onion si possono usare una moltitudine di tecn
         \item Nginx, un web server più moderno che fornisce diversi altri strumenti oltre al web server, tra cui il proxy e load balancer, è gratuito e come httpd è open source, ha superato apache da un paio di anni. Viene anche utilizzato in container docker, ma noi lo useremo in una classica macchina virtuale.
     \end{itemize}
 \end{itemize}
-
-
 
 \newpage
 \section{Creazione del servizio}
