@@ -37,6 +37,7 @@ body{
     border-radius: 16px;
     padding: 8px 8px 4px 8px;
     background-color: white;
+    border: 1.5px solid #f1f1f1;
 }
 .grid .expand{
     margin: 32px;

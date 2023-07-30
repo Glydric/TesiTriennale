@@ -258,16 +258,19 @@ Il miglior esempio è il sito ufficiale di \href{www.torproject.org}{Tor Project
     \includegraphics[width=\textwidth]{TorProjectOnionAvailable}
     \caption{Tor Browser mostra il pulsante \emph{.onion available} quando si visita il sito tramite Tor}
 }
+
+\newpage
 Per aggiungere questo header è sufficiente aggiungere la seguente riga al file di configurazione del server
 \begin{lstlisting}
     add_header Onion-Location http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion$request_uri;
 \end{lstlisting}
+\footnote{Il tag \lstinline{$request_uri} indica la sotto-pagina corrente, e quindi la pagina in cui andremo a fare il redirect, questa operazione non può essere fatta inserendo direttamente il tag all'interno del file HTML, in quanto non è possibile leggere l'url corrente della pagina}
 Oppure possiamo aggiungere direttamente il tag \lstinline{<meta>} nella sezione header della pagina HTML, nel caso di configurazioni particolari 
 \begin{lstlisting}[language=HTML]
     <meta http-equiv="onion-location" content="http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion" />
 \end{lstlisting}
 L'unico problema è che non potendo leggere l'url della pagina corrente, il tag \lstinline{<meta>} esegue sempre il redirect alla home page, indipendentemente dalla sotto-pagina corrente. \\
-L'implementazione di questa seconda tecnica è stata mostrata nel sito mio sito \url{tesi.miglio.dev} che mostra il pulsante per aprire il sito onion quando viene visitato tramite Tor. \\
+L'implementazione di questa seconda tecnica è stata mostrata nel sito mio sito \href{https://tesi.miglio.dev}{tesi.miglio.dev} che mostra il pulsante per aprire il sito onion quando viene visitato tramite Tor. \\
 \importImage{
     \label{fig:ClearWebPage}
     \includegraphics[width=\textwidth]{ClearWebPage}
