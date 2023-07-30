@@ -80,8 +80,26 @@ Le normali tecnologie di controllo di congestione non possono funzionare in una 
     \end{itemize}
     \item \textbf{Controllo di Stream}, simile al controllo di circuito ma il meccanismo è applicato ad ogni stream TCP separatamente. Ogni stream inizia con packaging = 500 con incrementi di 50 ad ogni relay sendme. Il relay sendme, a differenza del controllo a livello di circuito, viene inviato quando il numero di bytes che devono essere inviati è inferiore al threshold di 10 celle
 \end{itemize}
-
 \cite{onionv2}
+\subsection{Tor Relay}
+La rete Tor si basa su nodi gestiti da volontari che forniscono la propria potenza di calcolo per consentire alla rete tor di funzionare, l'aumento di nodi porta la rete a essere più veloce, stabile e sicura per gli utenti. Questi nodi sono anche chiamati \emph{Tor Relay}, ognuno possiede una exit policy che ne stabilisce il tipo e le caratteristiche, si suddividono quindi in
+\begin{itemize}
+    \item Non-exit Relay, sono i nodi interni alla rete, vengono definiti in base alla exit-policy, essi si dividono in
+    \begin{itemize}
+        \item \textbf{Guard Relay}, sono i primi nodi di ogni circuito, devono rispettare specifiche di velocità e stabilità non inferiori a 2MByte/s
+        \item \textbf{Middle Relay}, agiscono come tramite tra i nodi \emph{Guard} ed \emph{Exit}, possono diventare Guard solo se rispettano le relative specifiche
+    \end{itemize}
+    \item \textbf{Exit Relay}, sono gli ultimi nodi di ogni circuito, ricevono traffico dalla rete Tor e lo inoltrano in una rete normale. Questo porta coloro che fanno hosting di questi relay ad essere i più esposti a rischi legali\footnote{Se un utente usa la rete onion per scaricare contenuti con copyright, l'IP da cui è stato scaricato il file sarà quello del Relay e quindi le colpe ricadranno sul proprietario del server}, per questo e altri motivi è sconsigliato eseguire un Tor Relay dalla propria abitazione e viene piuttosto suggerito di affidarsi ad altre istutuzioni
+    \item \textbf{Bridge Relay}, sono nodi non pubblici\footnote{Non vengono inseriti nelle directory pubbliche Tor} i cui IP non possono quindi essere bloccati da governi o ISP in quanto privati. Inoltre generalmente non ricevono denunce legali di abuso della rete internet come invece accade per gli Exit Relay.
+\end{itemize}
+\cite{TorRelay}
+\cite{TorRelayTypes}
+Dal sito Tor \cite{TorRelayMetrics} è possibile vedere le statistiche riguardanti i relay, la loro bandwidth, il tipo, gli indirizzi IP ed il tempo di esecuzione. Dallo stesso sito è inoltre possibile filtrare per paese, vedendo il numero e caratteristiche dei Relay in Italia \\
+\importImage{
+    \label{fig:TorRelayMetrics}
+    \includegraphics[width=\textwidth]{TorRelays}
+    \caption{Statistiche dei Tor Relay in Italia}
+}
 \newpage
 \section{Directory Servers} \label{sec:DirectoryServers}
 I directory server sono un piccolo sottogruppo di onion router utilizzati per tracciare i cambiamenti nella topologia di rete. 
@@ -94,12 +112,11 @@ Quando l'utente tenta la connessione a un sito onion richiede e riceve dal direc
 Nel caso il Directory Server fosse compromesso e contenesse un Descriptor malevolo generato per reindirizzare il traffico\footnote{Che però non potrà avere la stessa chiave privata}, l'indirizzo onion che possediamo non sarebbe in grado\footnote{tramite la chiave pubblica al suo interno nascosta} di decriptare le informazioni, dato che sono state criptate con una differente chiave privata
 \cite{OnionServicesOverview}.
 Non c'è neanche la necessità di determinare se le informazioni sono correte, perché a patto che la chiave privata non sia resa pubblica, nessuno potrà manomettere il Descriptor senza renderlo illeggibile e/o \emph{"indecifrabile"}
-
 \section{Tor Browser}
 Una delle principali vulnerabilità della rete Tor è la possibilità che un servizio web crei un codice JavaScript\footnote{che viene eseguito sul browser dell'utente} malevolo in grado di ottenere informazioni sull'indirizzo dell'utente deanonimizzandolo. 
 Gli sviluppatori di Tor Browser hanno inserito appositamente un sistema di sicurezza che blocca gli script, questo però di contro porta molti siti a non funzionare correttamente. \\
 Essendo la rete Tor fortemente basata sulla criptografia la navigazione di un sito onion tramite Tor non fa comparire alcun avviso di sicurezza in caso di mancanza di HTTPS, dato che il traffico è già criptato. 
 Da tenere inoltre in considerazione che un certificato proveniente da una Certificate Authority potrebbe generare problemi di anonimizzazione del servizio a causa della Certificate Transparency\cite{CertificateTransparency} \\
-% TODO parla dei tor relay in maniera più specifica
+
 
 % \section{Vulnerabilità} %Qui si parla delle vulnerabilità di onion v2 per cui si è passati a v3
