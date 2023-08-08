@@ -7,6 +7,7 @@
 
 % Glydric's commands
 \newcommand{\importImage}[1]{\begin{figure}[htpb!]\centering #1 \end{figure}}
+\newcommand{\includeImage}[1]{\begin{figure} #1 \end{figure}}
 
 % -----------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
