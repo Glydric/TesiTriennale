@@ -98,60 +98,53 @@ Una volta creato l'account AWS ed eseguito l'accesso possiamo creare una macchin
 
 
 Una volta creata la macchina avremo la possibilità di scaricare la chiave privata con formato \lstinline{*.pem} che useremo per connetterci tramite SSH alla shell della macchina
-\begin{lstlisting}
+\begin{lstlisting}[caption={Connessione SSH}]
     ssh -i key.pem admin@*.compute.amazonaws.com
 \end{lstlisting}
-\captionof{lstlisting}{Connessione SSH}
 La primissima operazione sarà l'aggiornamento dei repository e del sistema
-\begin{lstlisting}
+\begin{lstlisting}[caption={Aggiornamento del sistema}]
     sudo apt update && sudo apt full-upgrade -y
 \end{lstlisting}
-\captionof{lstlisting}{Aggiornamento del sistema}
 
 Poi installiamo il web server nginx che abbiamo analizzato prima
-\begin{lstlisting}
+\begin{lstlisting}[caption={Installazione Nginx}]
     sudo apt install nginx
 \end{lstlisting}
-\captionof{lstlisting}{Installazione Nginx}
 
 Una volta completata l'installazione il web server viene automaticamente avviato e messo in ascolto sulla porta 80, in caso non fosse attivo \\
-\begin{lstlisting}
+\begin{lstlisting}[caption={Avvio di Nginx}]
     sudo systemctl start nginx
 \end{lstlisting}
-\captionof{lstlisting}{Avvio di Nginx}
 
 Per installare tor è innanzitutto necessario installare \textbf{apt-transport-https} per utilizzare i repository tramite HTTPs
 \begin{lstlisting}
     sudo apt install apt-transport-https
 \end{lstlisting}
 Dal comando \lstinline{lsb_release -c} possiamo vedere la distribuzione corrente e inserire il repository corretto nella configurazione, con Debian 11 siamo su di una distrubuzione bullseye, creiamo un file chiamato \lstinline{tor.list} \footnote{Il nome è configurabile} nella cartella \lstinline{/etc/apt/sources.list.d} dove andremmo ad aggiungere i repository TOR tramite le seguenti righe
-\begin{lstlisting}
+\begin{lstlisting}[caption={Tor Repository}]
     deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org bullseye main
     deb-src [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org bullseye main
 \end{lstlisting}
-\captionof{lstlisting}{Tor Repository}
 
 Assicuriamoci che GPG sia installato nel sistema prima di aggiungere le chiavi
-\begin{lstlisting}
+\begin{lstlisting}[caption={Installazione GPG}]
     sudo apt install gpg
 \end{lstlisting}
-\captionof{lstlisting}{Installazione GPG}
 
 Aggiungiamo le chiavi GPG della repository appena creata
-\begin{lstlisting}
+\begin{lstlisting}[caption={Aggiunta chiavi gpg dal repository Tor}]
     wget -qO- https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --dearmor | tee /usr/share/keyrings/tor-archive-keyring.gpg >/dev/null
 \end{lstlisting}
-\captionof{lstlisting}{Aggiunta chiavi gpg dal repository Tor}
 
 Aggiorniamo gli index e installiamo finalmente tor
-\begin{lstlisting}
+\begin{lstlisting}[caption={Installazione Tor}]
     sudo apt update && sudo apt install tor -y 
 \end{lstlisting}
-\captionof{lstlisting}{Installazione Tor}
+
 \cite{TorRepo}
 
 Generiamo il file \lstinline{torrc} che ci servirà per impostare tutti i parametri di configurazione 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Generazione file torrc}]
     sudo tor -f /etc/tor/torrc
 \end{lstlisting}
 
@@ -160,30 +153,26 @@ Riavviamo tor per aggiornare la configurazione, assicurarci che il file torrc no
 \begin{lstlisting}
     sudo systemctl restart tor
 \end{lstlisting}
-\captionof{lstlisting}{Riavvio di Tor}
 
 \subsection{Gestire la comunicazione tramite i socket unix}
 A questo punto tor ha creato gli introduction points e ha generato un circuito con ognuno di essi, ha inoltre generato le chiavi e il proprio hostname, queste informazioni sono state aggiunte nella cartella che abbiamo inserito nell'HiddenServicePort, in particolare il file chiamato hostname contiene l'indirizzo tor del nostro servizio \cite{SetupOnionService} \\
 Questo sistema però non è completamente sicuro, infatti Tor è connesso con il web server tramite la porta 80, essendo entrambi i processi sulla stessa macchina il sistema ottimale è utilizzare un socket unix tra i due processi. 
 Questo impedisce a un utente \textbf{non} Tor di accedere direttamente al web server senza dover configurare un firewall che comunque aggiunge complessità nella rete. \\
 Apriamo il file \lstinline{/etc/nginx/sites-enabled/default} e nella sezione server aggiungiamo il socket in ascolto, cosi che la comunicazione possa passare anche per il socket unix
-\begin{lstlisting}
+\begin{lstlisting}[caption={Aggiunta/creazione socket unix}]
     listen unix:/var/run/website.sock;
 \end{lstlisting}
-\captionof{lstlisting}{Aggiunta/creazione socket unix}
 
 Possiamo inoltre rimuovere la connessione dalla porta 80 commentando le seguenti righe
-\begin{lstlisting}
+\begin{lstlisting}[caption={Rimozione connessione dalla porta 80}]
     #listen 80 default_server;
     #listen [::]:80 default_server;
 \end{lstlisting}
-\captionof{lstlisting}{Rimozione connessione dalla porta 80}
 
 Dopo aver riavviato nginx ed esserci assicurati che non vi siano errori apriamo il file torrc e inseriamo lo stesso socket
-\begin{lstlisting}
+\begin{lstlisting}[caption={Aggiunta socket unix a torrc}]
     HiddenServicePort 80 unix:/var/run/website.sock
 \end{lstlisting}
-\captionof{lstlisting}{Aggiunta socket unix a torrc}
 
 Infine riavviamo tor
 \begin{lstlisting}
@@ -265,18 +254,19 @@ Per aggiungere questo header è sufficiente aggiungere la seguente riga al file 
     add_header Onion-Location http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion$request_uri;
 \end{lstlisting}
 \footnote{Il tag \lstinline{$request_uri} indica la sotto-pagina corrente, e quindi la pagina in cui andremo a fare il redirect, questa operazione non può essere fatta inserendo direttamente il tag all'interno del file HTML, in quanto non è possibile leggere l'url corrente della pagina}
-Oppure possiamo aggiungere direttamente il tag \lstinline{<meta>} nella sezione header della pagina HTML, nel caso di configurazioni particolari 
+Oppure possiamo aggiungere direttamente il tag \lstinline{<meta>} nella sezione header della pagina HTML, nel caso di configurazioni particolari
 \begin{lstlisting}[language=HTML]
     <meta http-equiv="onion-location" content="http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion" />
 \end{lstlisting}
-L'unico problema è che non potendo leggere l'url della pagina corrente, il tag \lstinline{<meta>} esegue sempre il redirect alla home page, indipendentemente dalla sotto-pagina corrente. \\
-L'implementazione di questa seconda tecnica è stata mostrata nel sito mio sito \href{https://tesi.miglio.dev}{tesi.miglio.dev} che mostra il pulsante per aprire il sito onion quando viene visitato tramite Tor. \\
+Questo metodo però ha un problema, non potendo leggere l'url della pagina corrente il tag \lstinline{<meta>} esegue sempre il redirect alla home page, indipendentemente dalla sotto-pagina corrente. 
+L'unico modo per risolvere questo problema è inserire manualmente il tag in ogni sottopagina ed inserire il path nell'indirizzo onion del tag. \\
+L'implementazione di questa seconda tecnica è stata mostrata nel mio sito \href{https://tesi.miglio.dev}{tesi.miglio.dev} che mostra il pulsante per aprire il sito onion quando viene visitato tramite Tor. \\
 \importImage{
     \label{fig:ClearWebPage}
     \includegraphics[width=\textwidth]{ClearWebPage}
     \caption{Tor Browser mostra il pulsante \emph{.onion available} quando si visita il nostro sito tramite Tor}
 }
-\cite{OnionLocationHeader} \\
+\cite{OnionLocationHeader}
 
 % TODO fix grammatico e migliorare la scrittura
 % TODO completa l'Onion-Location Header usando il sito tesi.miglio.dev come esempio facendo il redirect al sito onion
