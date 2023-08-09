@@ -124,7 +124,9 @@ Gli sviluppatori di Tor Browser hanno inserito appositamente un sistema di sicur
 Essendo la rete Tor fortemente basata sulla criptografia la navigazione di un sito onion tramite Tor non fa comparire alcun avviso di sicurezza in caso di mancanza di HTTPS, dato che il traffico è già criptato. 
 Da tenere inoltre in considerazione che un certificato proveniente da una Certificate Authority potrebbe generare problemi di anonimizzazione del servizio a causa della Certificate Transparency\cite{CertificateTransparency} \\
 \newpage
-\section{Creazione del circuito da wireshark}
+\section{Dimostazione da Wireshark}
+% TODO fix grammatico e migliorare la scrittura
+
 Ci sono diversi elementi che possono indicare che un circuito onion è in creazione, innanzitutto esso viene creato sfruttando i protocolli tcp e tls\footnote{In particolare la nuova versione di Tor usa TLSv1.3}, inserendo quindi TLS come filtro possiamo vedere in Wireshark come viene generato un circuito.
 \importImage{
     \label{fig:Wireshark_circuit_raw}
@@ -152,7 +154,7 @@ Analizziamo il primo pacchetto TLS che viene inviato al server, è denominato \t
 \importImage{
     \label{fig:Client_Hello}
     \includegraphics[width=\textwidth]{Wireshark/Client_Hello}
-    \caption{Onion Client Hello}
+    \caption{Client Hello}
 }
 \newpage
 Come vediamo onion sfrutta diverse estensioni
@@ -170,12 +172,13 @@ Come vediamo onion sfrutta diverse estensioni
     \item \lstinline{padding}, utilizzato come una sequenza di 0 sufficienti per far raggiungere al pacchetto almeno 512 bytes di lunghezza. Il campo può essere omesso per i pacchetti di almeno 512 bytes. Con pacchetti di lunghezza tra 509 e 511 bytes questo campo porta il pacchetto a superare i 512 bytes, in quanto non può essere inferiore ai 4 bytes\cite{RFC7685}
 \end{itemize}
 \newpage
-Successivamente il server risponde con un \textbf{Server Hello}, indicando un unico cipher suite e le estensioni \lstinline{supported_versions} e \lstinline{key_share}
+Successivamente il server risponde con un \textbf{Server Hello}, indicando un unico cipher suite e le estensioni \lstinline{supported_versions} e \lstinline{key_share}.
 \importImage{
     \label{fig:Server_Hello}
     \includegraphics[width=\textwidth]{Wireshark/Server_Hello}
-    \caption{Onion Server Hello}
-}
-% TODO aggiungi sessione wireshark per mostrare la connessione ad un sito onion
+    \caption{Server Hello e Application Data}
+}\\
+Da qui la connessione viaggia per il circuito onion e tutti i dati sono criptati con le chiavi che possiede solo il client Tor, per cui non è possibile analizzare il traffico, possiamo solo intuire quali pacchetti sono destinati alla rete onion.
+
 
 % \section{Vulnerabilità} %Qui si parla delle vulnerabilità di onion v2 per cui si è passati a v3
