@@ -124,16 +124,15 @@ Gli sviluppatori di Tor Browser hanno inserito appositamente un sistema di sicur
 Essendo la rete Tor fortemente basata sulla criptografia la navigazione di un sito onion tramite Tor non fa comparire alcun avviso di sicurezza in caso di mancanza di HTTPS, dato che il traffico è già criptato. 
 Da tenere inoltre in considerazione che un certificato proveniente da una Certificate Authority potrebbe generare problemi di anonimizzazione del servizio a causa della Certificate Transparency\cite{CertificateTransparency} \\
 \newpage
-\section{Dimostazione da Wireshark}
-% TODO fix grammatico e migliorare la scrittura
+\section{Dimostrazione da Wireshark}
 
-Ci sono diversi elementi che possono indicare che un circuito onion è in creazione, innanzitutto esso viene creato sfruttando i protocolli tcp e tls\footnote{In particolare la nuova versione di Tor usa TLSv1.3}, inserendo quindi TLS come filtro possiamo vedere in Wireshark come viene generato un circuito.
+Ci sono diversi elementi che possono indicare l'esistenza di un circuito onion, innanzitutto esso viene creato sfruttando il protocollo TLS\footnote{In particolare la nuova versione di Tor usa TLSv1.3} tramite TCP, inserendo quindi TLS come filtro in Wireshark possiamo vedere i pacchetti con cui viene generato il circuito.
 \importImage{
     \label{fig:Wireshark_circuit_raw}
     \includegraphics[width=\textwidth]{Wireshark/circuit_raw}
     \caption{Wireshark circuit}
 }\\
-Da qui vediamo che i due IP principali a cui il dispositivo si connette sono \lstinline{65.21.52.121} e \lstinline{185.177.229.16}. Vediamo anche che Tor scambia con questi due ip lo stesso numero di pacchetti e lo stesso numero di byte, per cui capiamo che vi è una correlazione.
+Da qui vediamo che i due IP principali a cui il dispositivo si connette sono \lstinline{65.21.52.121} e \lstinline{185.177.229.16}. Vediamo anche che Tor scambia con questi due IP lo stesso numero e tipo di pacchetti con la stessa quantità di byte, per cui vi è una correlazione.
 Eseguendo il filtro per IP possiamo quindi vedere tutti i pacchetti che i due dispositivi si scambiano
 \newpage
 \importImage{
@@ -141,14 +140,14 @@ Eseguendo il filtro per IP possiamo quindi vedere tutti i pacchetti che i due di
     \includegraphics[width=\textwidth]{Wireshark/IP_Filtering}
     \caption{Wireshark IP filtering}
 }
-Vediamo quindi che come primo punto viene eseguito un TCP handshake, successivamente inizia lo scambio di chiavi tramite TLSv1.3, possiamo inoltre notare che la porta con cui comunichiamo con il server \lstinline{65.21.52.121} la 9001\footnote{Tor Project suggerisce di non usare la porta 9001 per i bridge relay perchè è facilmente associabile alla rete Onion\cite{OnionAvoid9001}}.
-Ad ogni messaggio TLS corrisponde una risposta ACK TCP che possiamo omettere dal filtro.
+Vediamo quindi che inizialmente viene eseguito un TCP handshake, successivamente inizia lo scambio di chiavi tramite TLSv1.3, possiamo inoltre notare che la porta con cui comunichiamo con il server \lstinline{65.21.52.121} è la 9001\footnote{Tor Project suggerisce di non usare la porta 9001 per i bridge relay perché è facilmente associabile alla rete Onion\cite{OnionAvoid9001}}.
+A ogni messaggio TLS corrisponde una risposta ACK TCP che possiamo ignorare.
 \newpage
 Analizziamo il primo pacchetto TLS che viene inviato al server, è denominato \textbf{Client Hello} e possiede vari campi
 \begin{itemize}
-    \item \textbf{Cipher Suites}, una lista di protocolli di criptografia simmetrica supportati dal client che invia la richiesta, come descritto nell'RFC 8448. In questo caso i protocolli supportati sono 18, tra cui abbiamo AES 128 GCM SHA256 e AES 256 GCM SHA384
-    \item Compression Methods, implementato in TLSv1.3 solo per retrocompatibilità dei server, che possono anche ricevere e gestire richieste TLSv1.2. A differenza dei client TLSv1.3 che devono impostare questo parametro a 0(null), altrimenti riceveranno un \lstinline{illegal_parameter} message
-    \item \textbf{Extensions}, usato sia dalle applicationi che sfruttano TLS, come onion, che da funzionalità aggiuntive di TLSv1.3, implementate come estensioni per mantenere la retrocompatibilità, cosi che i server legacy possano ignorare le estensioni non riconosciute
+    \item \textbf{Cipher Suites}, una lista di protocolli di criptografia simmetrica supportati dal client che invia la richiesta\cite{RFC8448}. In questo caso i protocolli supportati sono 18, tra cui abbiamo \lstinline{AES 128 GCM SHA256} e \lstinline{AES 256 GCM SHA384}
+    \item Compression Methods, implementato in TLSv1.3 solo per retro compatibilità dei server, che possono anche ricevere e gestire richieste TLSv1.2. A differenza dei client TLSv1.3 che devono impostare questo parametro a 0 (null), altrimenti riceveranno un \lstinline{illegal_parameter message}
+    \item \textbf{Extensions}, usato sia dalle applicazioni che sfruttano TLS, come onion, che da alcune funzionalità di TLSv1.3, implementate come estensioni per mantenere la retro compatibilità. In tal modo i server legacy possono semplicemente ignorare le estensioni non riconosciute
 \end{itemize}
 \cite{TLSv1_3}
 \importImage{
@@ -160,11 +159,11 @@ Analizziamo il primo pacchetto TLS che viene inviato al server, è denominato \t
 Come vediamo onion sfrutta diverse estensioni
 \begin{itemize}
     \item \lstinline{server_name}, utilizzato per facilitare le connessioni sicure, indica il nome del server\cite{RFC6066}
-    \item \lstinline{ec_point_formats}, sta per Elliptic Curve Point Formats e indica i formati di compressione(point formats) supportati dal client\cite{RFC8422}
-    \item \lstinline{supported_groups}, precedentemente chimato Supported Elliptic Curves Extensions, indica gli Elliptic Curves utilizzati ordinati in base alla preferenza del client \cite{RFC8422}
+    \item \lstinline{ec_point_formats}, sta per Elliptic Curve Point Formats e indica i formati di compressione(Point Formats) supportati dal client\cite{RFC8422}
+    \item \lstinline{supported_groups}, precedentemente chiamato Supported Elliptic Curves Extensions, indica gli Elliptic Curves utilizzati ordinati in base alla preferenza del client \cite{RFC8422}
     \item \lstinline{session_ticket}, non usato
     \item \lstinline{encrypt_then_mac}, non usato
-    \item \lstinline{extended_master_secret}, non viene più usato ma deve comunque essere indicato per retrocompatibilità\cite{RFC7627}
+    \item \lstinline{extended_master_secret}, non viene più usato ma deve comunque essere indicato per retro compatibilità\cite{RFC7627}
     \item \lstinline{signature_algorithms}, utilizzato per indicare gli algoritmi di firma supportati dal client\cite{RFC8446}
     \item \lstinline{supported_versions}, utilizzato dal client per indicare le versioni di TLS supportate e dal server per indicare la versione utilizzata \cite{RFC8446}
     \item \lstinline{psk_key_exchange_modes}, utilizzato esclusivamente dal client per indicare le modalità di condivisione della passkey\cite{RFC8446}
@@ -181,4 +180,4 @@ Successivamente il server risponde con un \textbf{Server Hello}, indicando un un
 Da qui la connessione viaggia per il circuito onion e tutti i dati sono criptati con le chiavi che possiede solo il client Tor, per cui non è possibile analizzare il traffico, possiamo solo intuire quali pacchetti sono destinati alla rete onion.
 
 
-% \section{Vulnerabilità} %Qui si parla delle vulnerabilità di onion v2 per cui si è passati a v3
+% \section{Vulnerabilità} % Qui si parla delle vulnerabilità di onion v2 per cui si è passati a v3
