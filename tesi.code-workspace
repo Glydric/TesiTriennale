@@ -1,7 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "latex-tesi"
+			"path": "latex/tesi"
+		},
+		{
+			"path": "latex/presentation"
 		},
 		{
 			"path": "docs"
