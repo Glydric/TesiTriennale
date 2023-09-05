@@ -170,9 +170,6 @@
 \def\school#1{\gdef\@theschool{#1}}
 \def\course#1{\gdef\@thecourse{#1}}
 \def\advisor#1{\gdef\@theadvisor{#1}}
-\def\coadvisor#1{\gdef\@thecoadvisor{#1}}
-\def\coadvisor1#1{\gdef\@thecoadvisor1{#1}}
-\def\coadvisor2#1{\gdef\@thecoadvisor2{#1}}
 \def\academicyear#1{\gdef\@theacademicyear{#1}}
 \def\matricola#1{\gdef\@thematricola{#1}}
 
@@ -220,8 +217,8 @@
 \end{center}
 {\bfseries \small Matricola \@thematricola}%
 \begin{center}
-  {\hfill Correlatore \par}%
-  {\bfseries  \hfill \large  \@thecoadvisor2 \par}%
+  {\hfill  \par}%
+  {\bfseries  \hfill \large \par}%
   \vspace*{\stretch{7}}%
   \hrule%
   \vspace{0.15cm}%
