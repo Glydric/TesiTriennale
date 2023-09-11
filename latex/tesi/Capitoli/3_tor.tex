@@ -9,14 +9,23 @@
 Nel 2002 viene presentata la rete Tor, diventata open source 2 anni dopo è l'implementazione più conosciuta di onion routing \\
 Tra le varie migliore abbiamo 
 \begin{itemize}
-    \item La segretezza del canale, nella versione originale un nodo poteva forzare altri onion router a decriptare un traffico precedentemente registrato. La rete TOR invece sfrutta una tecnica di circuiti telescopici, le chiavi generate dal client in un determinato circuito sono di breve durata, non è quindi possibile utilizzarle successivamente per decriptare il vecchio traffico
-    \item L'implementazione del proxy di applicazione attraverso lo standard SOCKS, consente alla maggior parte del traffico TCP di funzionare senza modifiche. Precedentemente era necessario implementare un proxy per ogni applicazione, e di conseguenza generare un circuito per ogni applicazione, con conseguente duplicazione di chiavi. Il proxy implementato in TOR invece genera il circuito a livello di TCP e più processi applicativi possono utilizzarlo. Per garantire la non tracciabilità di un utente nello stesso stream dati usato da più applicazioni è stato implementato il meccanismo dei \emph{Rotating Circuits} che genera ogni minuto un nuovo circuito se quello precedente non sta essendo usato
+    \item \textbf{Circuiti Telescopici} fig. \ref{fig:telescopic}, mentre prima il processo di creazione del circuito iniziava con la scelta dell'exit node e proseguiva con la definizione degli altri nodi\footnote{Lasciando per ultimo il nodo d'ingressoIn}, ora inizia con la scelta del primo nodo, viene instaurata una connessione verso di lui e gli viene richiesto di estendere il circuito ai nodi successivi, in maniera \textbf{incrementale}. Questo porta a una migliore \textbf{segretezza del canale}, i nodi compromessi non sono più in grado di forzare gli altri onion router a decriptare un traffico precedentemente registrato
     
-    \item Controllo di congestione, un sistema decentralizzato che sfrutta ack end-to-end per garantire l'anonimato\ref{sec:CongestionControl}
+    \item L'implementazione del proxy di applicazione attraverso lo standard SOCKS, consente alla maggior parte del traffico TCP di funzionare senza modifiche. Precedentemente era necessario implementare un proxy per ogni applicazione, e di conseguenza generare un circuito per ogni applicazione, con conseguente duplicazione di chiavi. Il proxy implementato in TOR invece genera il circuito a livello di TCP e più processi applicativi possono utilizzarlo. Per garantire la non tracciabilità di un utente nello stesso stream dati usato da più applicazioni è stato implementato il meccanismo dei \emph{Rotating Circuits} che genera ogni minuto un nuovo circuito se quello precedente non è in uso
+    
+    \item Controllo di congestione, un sistema decentralizzato che sfrutta ack end-to-end per garantire l'anonimato \ref{sec:CongestionControl}
     \item Directory Server, nodi più fidati di altri che descrivono le informazioni di rete in maniera sicura e affidabile
     \item Politiche di uscita variabili, ogni nodo possiede delle politiche che specificano le connessioni consentite e rifiutate, fondamentale in una rete distribuita fatta da volontari
     \item Controllo di integrità end-to-end, viene eseguito un controllo di integrità nel momento in cui il pacchetto esce dalla rete per garantire che i contenuti non sono stati alterati
 \end{itemize}
+
+\begin{figure}[htpb!]
+    \centering
+    \includesvg[width=\textwidth]{TelescopingCircuits.svg}
+    \caption{Differenza tra la creazione di un circuito onion e Tor}
+    \label{fig:telescopic}
+\end{figure}
+
 Tor però non è completamente sicura, infatti non filtra informazioni di privacy nel corpo del messaggio come invece avviene in altri sistemi come Privoxy o Anonymizer e non offre garanzie in caso di attacco end-to-end che concerne sia sorgente che destinazione
 \cite{onionv2}
 
