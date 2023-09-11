@@ -32,7 +32,7 @@ Tor però non è completamente sicura, infatti non filtra informazioni di privac
 \section{Obiettivi}
 L'obiettivo principale della rete TOR è la creazione di una rete che possa rendere gli attacchi molto più complessi da portare a termine scoraggiando cosi un possibile hacker, da questo principio cardine sono derivati gli altri obiettivi, tra cui
 \begin{itemize}
-    \item Usabilità, la rete Tor a differenza degli altri sistemi che implementano le Mix-Networks\ref{sec:OnionMixNetwork} predilige la bassa latenza\footnote{Il che rende la rete adatta all'utilizzo tramite un web browser} e l'usabilità, un aspetto fondamentale se si vuole garantire l'anonimato\footnote{Maggiori sono i nodi più semplicemente si può garantire l'anonimato}.
+    \item Usabilità, la rete Tor a differenza degli altri sistemi che implementano le Mix-Networks \ref{sec:OnionMixNetwork} predilige la bassa latenza\footnote{Il che rende la rete adatta all'utilizzo tramite un web browser} e l'usabilità, un aspetto fondamentale se si vuole garantire l'anonimato\footnote{Maggiori sono i nodi più semplicemente si può garantire l'anonimato}.
     Da questo derivano altri obiettivi come
     \begin{itemize}
         \item Basse latenze, determinate anche dal fatto che più applicazioni possono usare lo stesso circuito TCP senza doverne generare uno nuovo per ogni stream dati, questo consente di ridurre il delay causato dalla criptografia asimmetrica
@@ -41,9 +41,18 @@ L'obiettivo principale della rete TOR è la creazione di una rete che possa rend
     \end{itemize}
     \item Semplicità, la rete deve essere facile da comprendere, doveva essere usabile nel mondo reale e non doveva essere troppo costosa
 \end{itemize}
-
 \cite{ChaumMixes}
+
+\newpage
+
 \section{Network Design}
+\begin{wrapfigure}{1}{0.5\textwidth}
+    \centering
+    \includesvg[width=0.5\textwidth]{overlayNetwork.svg}
+    \caption{TCP/IP stack with TOR network}
+    \label{fig:overlayNetwork}
+\end{wrapfigure}
+
 A differenza di altri sistemi che usano una rete peer-to-peer, Tor è una \emph{overlay network}\footnote{Una rete virtuale creata sfruttando una rete fisica preesistente}, questa scelta è derivata dalle possibili vulnerabilità di una rete basata sugli utenti, infatti un attaccante potrebbe compromettere il traffico leggendo o manipolando i dati. \\
 Ogni onion router è rappresentato come un processo software che mantiene due tipi di chiavi
 \begin{itemize}
