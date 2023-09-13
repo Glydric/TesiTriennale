@@ -1,22 +1,35 @@
-\documentclass{unicam_thesis}
+\documentclass[12pt]{unicam_thesis}
 
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage[inkscapeformat=png]{svg}
 \usepackage[backend=bibtex]{biblatex}
 \usepackage{hyperref}
-
+\usepackage{xcolor}
 
 % config
 \nocite{*}
-\bibliography{biblio.bib} %or \addbibresource{biblio.bib}
+\bibliography{biblio.bib}
 \graphicspath{{Immagini}}
-\lstset{
-    % basicstyle=\ttfamily,
-    % postbreak=\raisebox{0ex}[0ex][0ex]{\BeginAccSupp{ActualText={}}\ensuremath{\color{gray}\hookrightarrow\space}\EndAccSupp{}},
+
+\definecolor{codegray}{rgb}{0.8,0.8,0.8}
+
+\lstdefinestyle{glydric}{
     columns=fullflexible,
-    breaklines=true
+    basicstyle=\small\ttfamily\fontfamily{pcr}\selectfont,
+    backgroundcolor=\color{codegray},        
+    numberstyle=\tiny\color{codegray},
+    numbers=left,
+    numbersep=2pt
 }
+
+\lstset{
+    style=glydric,
+    breaklines=true,
+}
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TESI DATI FRONTESPIZIO
