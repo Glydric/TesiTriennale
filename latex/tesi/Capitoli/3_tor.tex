@@ -9,7 +9,7 @@
 Nel 2002 viene presentata la rete Tor, diventata open source 2 anni dopo è l'implementazione più conosciuta di onion routing \\
 Tra le varie migliore abbiamo 
 \begin{itemize}
-    \item \textbf{Circuiti Telescopici} fig. \ref{fig:telescopic}, mentre prima il processo di creazione del circuito iniziava con la scelta dell'exit node e proseguiva con la definizione degli altri nodi\footnote{Lasciando per ultimo il nodo d'ingressoIn}, ora inizia con la scelta del primo nodo, viene instaurata una connessione verso di lui e gli viene richiesto di estendere il circuito ai nodi successivi, in maniera \textbf{incrementale}. Questo porta a una migliore \textbf{segretezza del canale}, i nodi compromessi non sono più in grado di forzare gli altri onion router a decriptare un traffico precedentemente registrato
+    \item \textbf{Circuiti Telescopici} fig. \ref{fig:telescopic}, mentre prima il processo di creazione del circuito iniziava con la scelta dell'exit node e proseguiva con la definizione degli altri nodi\footnote{Lasciando per ultimo il nodo d'ingresso}, ora inizia con la scelta del primo nodo, viene instaurata una connessione verso di lui e gli viene richiesto di estendere il circuito ai nodi successivi, in maniera \textbf{incrementale}. Questo porta a una migliore \textbf{segretezza del canale}, i nodi compromessi non sono più in grado di forzare gli altri onion router a decriptare un traffico precedentemente registrato
     
     \item L'implementazione del proxy di applicazione attraverso lo standard SOCKS, consente alla maggior parte del traffico TCP di funzionare senza modifiche. Precedentemente era necessario implementare un proxy per ogni applicazione, e di conseguenza generare un circuito per ogni applicazione, con conseguente duplicazione di chiavi. Il proxy implementato in TOR invece genera il circuito a livello di TCP e più processi applicativi possono utilizzarlo. Per garantire la non tracciabilità di un utente nello stesso stream dati usato da più applicazioni è stato implementato il meccanismo dei \emph{Rotating Circuits} che genera ogni minuto un nuovo circuito se quello precedente non è in uso
     
@@ -26,7 +26,7 @@ Tra le varie migliore abbiamo
     \label{fig:telescopic}
 \end{figure}
 
-Tor però non è completamente sicura, infatti non filtra informazioni di privacy nel corpo del messaggio come invece avviene in altri sistemi come Privoxy o Anonymizer e non offre garanzie in caso di attacco end-to-end che concerne sia sorgente che destinazione
+Tor però non è completamente sicura, infatti non filtra informazioni di privacy nel corpo del messaggio come invece avviene in altri sistemi come \emph{Privoxy} o \emph{Anonymizer} e non offre garanzie in caso di attacco end-to-end che concerne sia sorgente che destinazione
 \cite{onionv2}
 
 \section{Obiettivi}
@@ -44,6 +44,7 @@ L'obiettivo principale della rete TOR è la creazione di una rete che possa rend
 \cite{ChaumMixes}
 
 \newpage
+
 
 \section{Network Design}
 \begin{wrapfigure}{1}{0.5\textwidth}
@@ -90,7 +91,8 @@ L'utente per generare il circuito segue un processo di negoziazione incrementale
     \item Questa operazione viene effettuata, richiedendo all'ultimo router corrente di creare una connessione con il suo successivo, finché il circuito non viene completato\cite{ChaumMixes}
 \end{enumerate}
 Ogni applicazione, in base alle proprie necessità, invia le richieste di stream TCP all'Onion Proxy, che sceglie il circuito più recente (oppure genera un nuovo circuito) e sceglie un exit node, solitamente l'ultimo router. 
-A questo punto l'OP invia una cella \emph{relay begin} con un identificativo casuale all'exit node, la risposta dell'exit node conferma l'esistenza del nuovo stream TCP e l'OP può accettare i dati delle applicazioni TCP ed inoltrarli nella rete Onion \\
+A questo punto l'OP invia una cella \emph{relay begin} con un identificativo casuale all'exit node, la risposta dell'exit node conferma l'esistenza del nuovo stream TCP e l'OP può accettare i dati delle applicazioni TCP e inoltrarli nella rete Onion \\
+
 
 \subsection{Controllo di Congestione} \label{sec:CongestionControl}
 Questo design ha qualche problema derivato dal fatto che più OP potrebbero scegliere lo stesso percorso OR-OR, generando un bottleneck e saturando la rete. 
@@ -98,10 +100,10 @@ Le normali tecnologie di controllo di congestione non possono funzionare in una 
 \begin{itemize}
     \item \textbf{Controllo di Circuito}, ogni OP possiede le informazioni di due finestre per ogni OR, mentre ogni OR possiede le informazioni delle finestre dell'OP per ogni circuito di cui fanno parte. Le 2 finestre iniziano da un valore di 1000 e decrementano a ogni cella, esse sono
     \begin{itemize}
-        \item \textbf{Packaging window}, tiene traccia del numero di celle che un OR può inviare verso l'OP, quando un router riceve abbastanza celle dati (100) invia un relay sendme all relativo OP con $streamID = 0$, quando un OR riceve un relay sendme incrementa la finestra di packaging (di 100) per il relativo OP, se la finestra di packaging raggiunge 0 il nodo che sia un Onion Router o un'Onion Proxy smette di ricevere ed inviare celle dal circuito attendendo il sendme
+        \item \textbf{Packaging window}, tiene traccia del numero di celle che un OR può inviare verso l'OP, quando un router riceve abbastanza celle dati (100) invia un relay sendme all relativo OP con $streamID = 0$, quando un OR riceve un relay sendme incrementa la finestra di packaging (di 100) per il relativo OP, se la finestra di packaging raggiunge 0 il nodo che sia un Onion Router o un'Onion Proxy smette di ricevere e inviare celle dal circuito attendendo il sendme
         \item \textbf{Delivery window}, tiene traccia del numero di celle che un OR è in grado di inviare fuori dalla rete
     \end{itemize}
-    \item \textbf{Controllo di Stream}, simile al controllo di circuito ma il meccanismo è applicato ad ogni stream TCP separatamente. Ogni stream inizia con packaging = 500 con incrementi di 50 ad ogni relay sendme. Il relay sendme, a differenza del controllo a livello di circuito, viene inviato quando il numero di bytes che devono essere inviati è inferiore al threshold di 10 celle
+    \item \textbf{Controllo di Stream}, simile al controllo di circuito ma il meccanismo è applicato a ogni stream TCP separatamente. Ogni stream inizia con packaging = 500 con incrementi di 50 a ogni relay sendme. Il relay sendme, a differenza del controllo a livello di circuito, viene inviato quando il numero di bytes che devono essere inviati è inferiore al threshold di 10 celle
 \end{itemize}
 \cite{onionv2}
 \subsection{Tor Relay}
