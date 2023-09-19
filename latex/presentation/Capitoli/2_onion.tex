@@ -1,0 +1,28 @@
+\section{Onion Routing}
+\begin{frame}{Onion Routing}
+    \begin{figure}[htpb!]
+        \centering
+        \includesvg[width=\textwidth]{SpiegazioneOnion.svg}
+    \end{figure}
+    La rete Onion è una rete distribuita composta da nodi chiamati \textbf{Onion Router}, collegati tra loro tramite i circuiti creati dai client/proxy. \\
+    Ogni pacchetto che passa nel circuito viene decriptato in maniera sequenziale dai relativi nodi prima di essere inoltrato all'exit node che si occupa di instradare il pacchetto nella classica rete Internet. \\ 
+    Grazie a questo meccanismo nessun nodo conosce contemporaneamente l'indirizzo del mittente e del destinatario.
+
+
+\end{frame}
+
+\begin{frame}
+    
+\end{frame}
+
+\begin{frame}{Creazione del circuito}
+    La generazione del circuito è un processo \textbf{iterativo} e \textbf{progressivo} in cui il proxy server sceglie i nodi del circuito. A partire dal primo nodo viene instaurata una connessione \textbf{TLS} e vengono scambiate le \textbf{chiavi simmetriche} tramite un processo \textbf{asimmetrico} (in maniera simile allo scambio di chiavi di HTTPS), successivamente si usano queste chiavi per cifrare il messaggio che verrà inviato al primo nodo che lo decripta e inoltra al secondo nodo. \\
+    Questo processo continua fino all'exit node, a questo punto il circuito è completo e può iniziare a trasmettere i pacchetti.
+\end{frame}
+    
+\begin{frame}
+    \begin{figure}[htpb!]
+        \centering
+        \includesvg[width=\textwidth]{circuitCreation.svg}
+    \end{figure}
+\end{frame}
