@@ -11,9 +11,11 @@
 %% General document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage[inkscapeformat=png]{svg}
 \usetikzlibrary{decorations.fractals}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\graphicspath{{Immagini}}
 
 %% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \useoutertheme[subsection=false,shadow]{miniframes}
@@ -34,74 +36,60 @@
 \setbeamercolor*{structure}{fg=orangeUnicam} 
 \setbeamercolor*{frametitle}{fg=redUnicam}
 
-
 \setbeamercolor*{palette tertiary}{fg=orangeUnicam,bg=bluUnicam} 
 \setbeamercolor*{palette quaternary}{fg=black,bg=black!10} 
-
-
 
 \theoremstyle{definition} \newtheorem{esempio}{Esempio}
 \theoremstyle{definition}
 \newtheorem{definizione}{Definition} \theoremstyle{plain}
 \newtheorem{teorema}{Theorem}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{\scshape}
 \begin{frame}
-\title{\color{redUnicam}{Servizi Onion}}
-\subtitle{Dalla teoria all’implementazione}
-\begin{center}
-%\author{
-%	Matteo Rucco\\
-%	{\it University of Camerino - TOPDRIM Collaboration}\\
-%	
-%	}
-
-\author[shortname]{{\textbf{Leonardo Migliorelli}\inst{1}}\\
-\fontsize{8pt}{10}\selectfont{leonardo.migliorelli@studenti.unicam.it}
-\institute[shortinst]{\fontsize{6pt}{6}\selectfont{\inst{1}University of Camerino, Italy}}}
-\date{
-	\begin{figure}[htpb!]
-	
-	\centering{
-   \includegraphics[width=0.10\textwidth]{immagini/stemma}
- }
-%\today
-\end{figure}
-	
-}
-\titlepage
-\end{center}
+	\title{\color{redUnicam}{Servizi Onion}}
+	\subtitle{Dalla teoria all’implementazione}
+	\centering
+	\author[shortname]{{\textbf{Leonardo Migliorelli}\inst{1}}\\
+	\fontsize{8pt}{10}\selectfont{leonardo.migliorelli@studenti.unicam.it}
+	\institute[shortinst]{\fontsize{6pt}{6}\selectfont{\inst{1}University of Camerino, Italy}}}
+	\date{
+		\begin{figure}[htpb!]
+			\centering{
+				\includegraphics[width=0.10\textwidth]{immagini/stemma}
+			}
+		\end{figure}
+	}
+	\titlepage
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{
-	\begin{frame}{Computer Science @ Unicam}
 
-		Tesi Unicam - Servizi Onion, dalla teoria dall'implementazione
-		\begin{itemize}
-			\item Professore e relatore: Marcantoni Fausto https://computerscience.unicam.it/marcantoni/
-			\item Studente: Leonardo Migliorelli leonardo.migliorelli@studenti.unicam.it MAT. 113920
-		\end{itemize}
-	\end{frame}
-}
+\begin{frame}{Computer Science @ Unicam}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Tesi Unicam - Servizi Onion, dalla teoria dall'implementazione
+	\begin{itemize}
+		\item Relatore: Marcantoni Fausto https://computerscience.unicam.it/marcantoni/
+		\item Studente: Leonardo Migliorelli leonardo.migliorelli@studenti.unicam.it MAT. 113920
+	\end{itemize}
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Indice}
-\tableofcontents
+	\tableofcontents
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{Capitoli/1_introduzione.tex}
-\input{Capitoli/example.tex}
 
+
+\input{Capitoli/1_introduzione.tex}
+\input{Capitoli/2_onion.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+% TODO fai le slide ~20 pagine

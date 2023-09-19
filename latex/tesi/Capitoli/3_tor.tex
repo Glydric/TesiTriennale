@@ -85,7 +85,7 @@ Inoltre il tipo di comando definisce il tipo della cella
 
 L'utente per generare il circuito segue un processo di negoziazione incrementale:
 \begin{enumerate}
-    \item Come primo passo l'utente, o meglio l'Onion Proxy crea e invia una richiesta \emph{relay} al primo nodo nel percorso scelto
+    \item Come primo passo l'utente, o meglio l'Onion Proxy crea e invia una richiesta \emph{relay} al primo nodo nel percorso scelto\footnote{Tor possiede una lista di relay pre-caricata da cui sceglie i propri nodi per il circuito, inoltre i relay vengono aggiornati grazie a dei server centralizzati chiamati Directory Authority}
     \item Avviene la condivisione della chiave simmetrica tramite l'handshake di Diffie-Hellman, la creazione dell'ID del circuito e di conseguenza la creazione della connessione con il primo nodo (R1)
     \item L'utente invia una richiesta relay extend indicando a R1 l'indirizzo del secondo nodo nel percorso scelto (R2), R1 inizia una connessione con R2 definendo un nuovo id e associando la connessione OP-R1 con la connessione R1-R2, OP e R2 non si conoscono a vicenda e comunicano solo tramite l'intermediario R1. In fine R1 invia all'utente le informazioni del nuovo nodo tra cui la chiave simmetrica per il relativo strato
     \item Questa operazione viene effettuata, richiedendo all'ultimo router corrente di creare una connessione con il suo successivo, finché il circuito non viene completato\cite{ChaumMixes}
