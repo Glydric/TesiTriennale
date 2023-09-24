@@ -9,14 +9,14 @@
 Nel 2002 viene presentata la rete Tor, diventata open source 2 anni dopo è l'implementazione più conosciuta di onion routing. \\
 Tra le varie migliore abbiamo:
 \begin{itemize}
-    \item \textbf{Circuiti Telescopici} fig. \ref{fig:telescopic}, mentre prima il processo di creazione del circuito iniziava con la scelta dell'exit node e proseguiva con la definizione degli altri nodi\footnote{Lasciando per ultimo il nodo d'ingresso}, ora inizia con la scelta del primo nodo, viene instaurata una connessione verso di lui e gli viene richiesto di estendere il circuito ai nodi successivi, in maniera \textbf{incrementale}. Questo porta a una migliore \textbf{segretezza del canale}, i nodi compromessi non sono più in grado di forzare gli altri onion router a decriptare un traffico precedentemente registrato.
+    \item \textbf{Circuiti Telescopici} Fig. \ref{fig:telescopic}, mentre prima il processo di creazione del circuito iniziava con la scelta dell'exit node e proseguiva con la definizione degli altri nodi\footnote{Lasciando per ultimo il nodo d'ingresso}, ora inizia con la scelta del primo nodo, viene instaurata una connessione verso di lui e gli viene richiesto di estendere il circuito ai nodi successivi, in maniera \textbf{incrementale}. Questo porta a una migliore \textbf{segretezza del canale}, i nodi compromessi non sono più in grado di forzare gli altri onion router a decriptare un traffico precedentemente registrato.
     
-    \item L'implementazione del proxy di applicazione attraverso lo standard SOCKS, consente alla maggior parte del traffico TCP di funzionare senza modifiche. Precedentemente era necessario implementare un proxy per ogni applicazione, e di conseguenza generare un circuito per ogni applicazione, con conseguente duplicazione di chiavi. Il proxy implementato in TOR invece genera il circuito a livello di TCP e più processi applicativi possono utilizzarlo. Per garantire la non tracciabilità di un utente nello stesso stream dati usato da più applicazioni è stato implementato il meccanismo dei \emph{Rotating Circuits} che genera ogni minuto un nuovo circuito se quello precedente non è in uso.
+    \item L'implementazione del \textbf{proxy di applicazione} attraverso lo standard SOCKS, consente alla maggior parte del traffico TCP di funzionare senza modifiche. Precedentemente era necessario implementare un proxy per ogni applicazione, e di conseguenza generare un circuito per ogni applicazione, con conseguente duplicazione di chiavi. Il proxy implementato in TOR invece genera il circuito a livello di TCP e più processi applicativi possono utilizzarlo. Per garantire la non tracciabilità di un utente nello stesso stream dati usato da più applicazioni è stato implementato il meccanismo dei \emph{Rotating Circuits} che genera ogni minuto un nuovo circuito se quello precedente non è in uso.
     
-    \item Controllo di congestione, un sistema decentralizzato che sfrutta ack end-to-end per garantire l'anonimato \ref{sec:CongestionControl}.
-    \item Directory Server, nodi più fidati di altri che descrivono le informazioni di rete in maniera sicura e affidabile.
-    \item Politiche di uscita variabili, ogni nodo possiede delle politiche che specificano le connessioni consentite e rifiutate, fondamentale in una rete distribuita fatta da volontari.
-    \item Controllo di integrità end-to-end, viene eseguito un controllo di integrità nel momento in cui il pacchetto esce dalla rete per garantire che i contenuti non sono stati alterati.
+    \item \textbf{Controllo di congestione}, un sistema decentralizzato che sfrutta ack end-to-end per garantire l'anonimato (Sec. \ref{sec:CongestionControl}).
+    \item \textbf{Directory Server}, nodi più fidati di altri che descrivono le informazioni di rete in maniera sicura e affidabile.
+    \item \textbf{Politiche di uscita variabili}, ogni nodo possiede delle politiche che specificano le connessioni consentite e rifiutate, fondamentale in una rete distribuita fatta da volontari.
+    \item \textbf{Controllo di integrità end-to-end}, viene eseguito un controllo di integrità nel momento in cui il pacchetto esce dalla rete per garantire che i contenuti non sono stati alterati.
 \end{itemize}
 
 \begin{figure}[htpb!]
@@ -32,7 +32,7 @@ Tor però non è completamente sicura, infatti non filtra informazioni di privac
 \section{Obiettivi}
 L'obiettivo principale della rete TOR è la creazione di una rete che possa rendere gli attacchi molto più complessi da portare a termine scoraggiando cosi un possibile hacker, da questo principio cardine sono derivati gli altri obiettivi, tra cui:
 \begin{itemize}
-    \item Usabilità, la rete Tor a differenza degli altri sistemi che implementano le Mix-Networks \ref{sec:OnionMixNetwork} predilige la bassa latenza\footnote{Il che rende la rete adatta all'utilizzo tramite un web browser} e l'usabilità, un aspetto fondamentale se si vuole garantire l'anonimato\footnote{Maggiori sono i nodi più semplicemente si può garantire l'anonimato}.
+    \item Usabilità, la rete Tor a differenza degli altri sistemi che implementano le Mix-Networks (Sec. \ref{sec:OnionMixNetwork}) predilige la bassa latenza\footnote{Il che rende la rete adatta all'utilizzo tramite un web browser} e l'usabilità, un aspetto fondamentale se si vuole garantire l'anonimato\footnote{Maggiori sono i nodi più semplicemente si può garantire l'anonimato}.
     Da questo derivano altri obiettivi come
     \begin{itemize}
         \item Basse latenze, determinate anche dal fatto che più applicazioni possono usare lo stesso circuito TCP senza doverne generare uno nuovo per ogni stream dati, questo consente di ridurre il delay causato dalla criptografia asimmetrica.
@@ -70,7 +70,7 @@ Un elemento chiave della rete TOR sono le celle, pacchetti di dimensione fissa a
 Inoltre il tipo di comando definisce il tipo della cella:
 \begin{itemize}
     \item \textbf{Control}, pacchetti di controllo gestiti dal primo router che li riceve, per questo non vengono mai inoltrati.
-    \item \textbf{Relay}, trasporta stream dati per cui ha necessità di un header aggiuntivo contenente l'identificativo streamID, il checksum per il controllo di integrità, la dimensione del payload e un comando di relay. Il comando di relay può essere :
+    \item \textbf{Relay}, trasporta stream dati per cui ha necessità di un header aggiuntivo contenente l'identificativo streamID, il checksum per il controllo di integrità, la dimensione del payload e un comando di relay. Il comando di relay può essere:
     \begin{itemize}
         \item \textbf{Begin} per iniziare uno stream.
         \item \textbf{End} per terminare uno stream.

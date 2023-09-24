@@ -2,19 +2,24 @@
 \begin{frame}{Onion Routing}
     \begin{figure}[htpb!]
         \centering
-        \includesvg[width=\textwidth]{SpiegazioneOnion.svg}
+        \includesvg[width=\textwidth]{SpiegazioneOnion}
     \end{figure}
     La rete Onion è una rete distribuita composta da nodi chiamati \textbf{Onion Router}, collegati tra loro tramite i circuiti creati dai client/proxy. \\
     Ogni pacchetto che passa nel circuito viene decriptato in maniera sequenziale dai relativi nodi prima di essere inoltrato all'exit node che si occupa di instradare il pacchetto nella classica rete Internet. \\ 
     Grazie a questo meccanismo nessun nodo conosce contemporaneamente l'indirizzo del mittente e del destinatario.
 
-
 \end{frame}
 
 \begin{frame}
-    
+    Ci sono 3 proxy usati da Onion:
+    \begin{itemize}
+        \item Un proxy che genera e gestisce le connessioni, ha necessità di conoscere la topologia della rete Onion.
+        \item \textbf{Application Specific Proxy}, si occupa di convertire le richieste delle applicazioni in pacchetti Onion.
+        \item \textbf{Application Specific Privacy Filter}, un proxy opzionale che sanifica lo stream di dati rimuovendo informazioni che potrebbero identificare il client.
+    \end{itemize}
 \end{frame}
 
+\subsection{Creazione del circuito}
 \begin{frame}{Creazione del circuito}
     La generazione del circuito è un processo \textbf{iterativo} e \textbf{progressivo} in cui il proxy server sceglie i nodi del circuito. A partire dal primo nodo viene instaurata una connessione \textbf{TLS} e vengono scambiate le \textbf{chiavi simmetriche} tramite un processo \textbf{asimmetrico} (in maniera simile allo scambio di chiavi di HTTPS), successivamente si usano queste chiavi per cifrare il messaggio che verrà inviato al primo nodo che lo decripta e inoltra al secondo nodo. \\
     Questo processo continua fino all'exit node, a questo punto il circuito è completo e può iniziare a trasmettere i pacchetti.
@@ -25,4 +30,13 @@
         \centering
         \includesvg[width=\textwidth]{circuitCreation.svg}
     \end{figure}
+\end{frame}
+
+\subsection{Chaum Mix}
+\begin{frame}{Chaum Mix}
+    La rete Onion è basata sullo studio di David Chaum che propose un sistema di comunicazione anonima basato sulla crittografia. Nella sua conclusione una rete di questo tipo doveva avere le seguenti caratteristiche:
+    \begin{itemize}
+        \item \textbf{Sealing}, una tecnica con cui il messaggio viene annesso ad una stringa casuale prima di essere criptato per aumentarne la sicurezza.
+        \item Il destinatario deve avere la possibilità di rispondere tramite un indirizzo \textbf{non tracciabile} generato dal client a partire da quello reale, tale indirizzo è decifrabile solo dal primo mix che quindi può inoltrare il messaggio al mittente.
+    \end{itemize}
 \end{frame}

@@ -1,0 +1,36 @@
+\section{Tor § Onion v2}
+\begin{frame}{Tor}
+    \begin{wrapfigure}{1}{0.2\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{TorLogo}
+    \end{wrapfigure}
+
+    La rete Tor è la più famosa implementazione di Onion, grazie all'apporto delle seguenti migliorie:
+    \begin{itemize}
+        \item Circuiti telescopici
+        \item Proxy di applicazione tramite SOCKS
+        \item Controllo di congestione
+        \item Directory server
+        \item Politiche di uscita variabili
+        \item Controllo d'integrità end-to-end
+    \end{itemize}
+\end{frame}
+
+\subsection{Obiettivi}
+\begin{frame}{Obiettivi}
+    L'obiettivo principale della rete TOR è quello di garantire l'anonimato dell'utente finale, e scoraggiare eventuali attaccanti, sono stati quindi definiti i seguenti obiettivi:
+    \begin{itemize}
+        \item Usabilità, la rete deve essere utilizzabile da chiunque, questo è un'aspetto fffondamentale per garantire l'anonimato.
+        \item Semplicità, la rete deve essere semplice da utilizzare, in modo da non scoraggiare gli utenti meno esperti.
+    \end{itemize}
+\end{frame}
+
+\subsection{Network Design}
+\begin{frame}{Network Design}
+    \begin{wrapfigure}{1}{0.2\textwidth}
+        \centering
+        \includesvg[width=0.3\textwidth]{overlayNetwork}
+    \end{wrapfigure}
+
+    La rete Tor è una rete che esiste al di sopra delle esistenti reti
+\end{frame}
