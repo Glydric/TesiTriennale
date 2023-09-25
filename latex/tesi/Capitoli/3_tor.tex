@@ -78,7 +78,7 @@ Inoltre il tipo di comando definisce il tipo della cella:
         \item \textbf{Connected} per rispondere al relay begin dell'OP, informandolo che lo stream è stato creato con successo.
         \item \textbf{Extend} per estendere un circuito di un router.
         \item \textbf{Truncate} per eseguire un teardown di una parte del circuito.
-        \item \textbf{Sendme} usato per il controllo di congestione.
+        \item \textbf{Sendme} usato nel il controllo di congestione per indicare che nuove celle dati possono essere ricevute.
         \item \textbf{Drop} 
     \end{itemize}
 \end{itemize}
@@ -95,13 +95,17 @@ A questo punto l'OP invia una cella \emph{relay begin} con un identificativo cas
 
 
 \subsection{Controllo di Congestione} \label{sec:CongestionControl}
-Questo design ha qualche problema derivato dal fatto che più OP potrebbero scegliere lo stesso percorso OR-OR, generando un bottleneck e saturando la rete. 
-Le normali tecnologie di controllo di congestione non possono funzionare in una rete del genere, i pacchetti devono rispettare il proprio percorso e non possono cambiarlo, questo ne renderebbe impossibile la lettura. Per implementare un sistema di controllo di congestione sono stati sviluppati 2 meccanismi:
+In una rete Onion non è possibile sostituire un router nel circuito, quando non è più in grado di gestire le richieste, senza rendere illeggibile il traffico, per questo è stato implementato un meccanismo di controllo di congestione che limita i circuiti o gli stream dati per evitare di saturare la rete. Sono stati sviluppati 2 meccanismi:
 \begin{itemize}
-    \item \textbf{Controllo di Circuito}, ogni OP possiede le informazioni di due finestre per ogni OR, mentre ogni OR possiede le informazioni delle finestre dell'OP per ogni circuito di cui fanno parte. Le 2 finestre iniziano da un valore di 1000 e decrementano a ogni cella, esse sono:
+    \item \textbf{Controllo di Circuito}, ogni OP mantiene le informazioni di due finestre per ogni OR, mentre ogni OR mantiene le informazioni delle finestre dell'OP di ogni circuito di cui fa parte. 
+    Le 2 finestre iniziano da un valore di 1000 e decrementano a ogni cella, esse sono:
     \begin{itemize}
-        \item \textbf{Packaging window}, tiene traccia del numero di celle che un OR può inviare verso l'OP, quando un router riceve abbastanza celle dati (100) invia un relay sendme all relativo OP con $streamID = 0$, quando un OR riceve un relay sendme incrementa la finestra di packaging (di 100) per il relativo OP, se la finestra di packaging raggiunge 0 il nodo che sia un Onion Router o un'Onion Proxy smette di ricevere e inviare celle dal circuito attendendo il sendme.
-        \item \textbf{Delivery window}, tiene traccia del numero di celle che un OR è in grado di inviare fuori dalla rete.
+        \item \textbf{Packaging window}, tiene traccia del numero di celle che un OR può inviare verso l'OP. 
+        Quando un OR riceve abbastanza celle dati (100) invia un relay sendme con $streamID = 0$ al relativo OP, il quale, alla ricezione, incrementa la finestra di packaging (di 100) per quell'OR. 
+        L'Onion Proxy agisce in maniera simile, quando riceve abbastanza celle dati invia un relay sendme all'OR il quale incrementa la finestra per il relativo OP.
+        Se la finestra di packaging raggiunge 0 il nodo (che sia un'Onion Router o un'Onion Proxy) smette di leggere e inviare celle attendendo il sendme. 
+        \item \textbf{Delivery window}, tiene traccia del numero di celle dati che un OR è in grado di inviare fuori dalla rete.
+        %le due sono praticamente uguali, cambia il verso della comunicazione, per cui la delivery è in realtà la packaging dal punto di vista dell'exit node.
     \end{itemize}
     \item \textbf{Controllo di Stream}, simile al controllo di circuito ma il meccanismo è applicato a ogni stream TCP separatamente. Ogni stream inizia con packaging = 500 con incrementi di 50 a ogni relay sendme. Il relay sendme, a differenza del controllo a livello di circuito, viene inviato quando il numero di bytes che devono essere inviati è inferiore al threshold di 10 celle.
 \end{itemize}
@@ -109,7 +113,7 @@ Le normali tecnologie di controllo di congestione non possono funzionare in una 
 \subsection{Tor Relay}
 La rete Tor si basa su nodi gestiti da volontari che forniscono la propria potenza di calcolo per consentire alla rete tor di funzionare, l'aumento di nodi porta la rete a essere più veloce, stabile e sicura per gli utenti. Questi nodi sono anche chiamati \emph{Tor Relay}, ognuno possiede una exit policy che ne stabilisce il tipo e le caratteristiche, si suddividono quindi in:
 \begin{itemize}
-    \item Non-exit Relay, sono i nodi interni alla rete, vengono definiti in base alla exit-policy, essi si dividono in:
+    \item \textbf{Non-exit Relay}, sono i nodi interni alla rete, vengono definiti in base alla exit-policy, essi si dividono in:
     \begin{itemize}
         \item \textbf{Guard Relay}, sono i primi nodi di ogni circuito, devono rispettare specifiche di velocità e stabilità non inferiori a 2MByte/s.
         \item \textbf{Middle Relay}, agiscono come tramite tra i nodi \emph{Guard} ed \emph{Exit}, possono diventare Guard solo se rispettano le relative specifiche.
@@ -118,7 +122,7 @@ La rete Tor si basa su nodi gestiti da volontari che forniscono la propria poten
     \item \textbf{Bridge Relay}, sono nodi non pubblici\footnote{Non vengono inseriti nelle directory pubbliche Tor} i cui IP non possono quindi essere bloccati da governi o ISP in quanto privati. Inoltre generalmente non ricevono denunce legali di abuso della rete internet come invece accade per gli Exit Relay.
 \end{itemize}
 \cite{TorRelay}
-\cite{TorRelayTypes}
+\cite{TorRelayTypes} \\
 Dal sito Tor \cite{TorRelayMetrics} è possibile vedere le statistiche riguardanti i relay, la loro bandwidth, il tipo, gli indirizzi IP e il tempo di esecuzione. Dallo stesso sito è inoltre possibile filtrare per paese, vedendo il numero e caratteristiche dei Relay in Italia. \\
 \importImage{
     \label{fig:TorRelayMetrics}
