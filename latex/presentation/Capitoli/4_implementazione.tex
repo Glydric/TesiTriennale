@@ -1,4 +1,12 @@
 \section{Implementazione}
+\begin{frame}{Implementazione}
+    L'implementazione di un servizio onion consiste nell'utilizzare il \textbf{Proxy Onion} per inoltrare le richieste dalla rete Tor al server web, il proxy gestisce la generazione delle chiavi, dell'indirizzo e la definizione e connessione con gli \textbf{introduction points}, oltre alla generazione del descriptor e la sua pubblicazione nei Directory Servers. \\
+    In particolare la nostra implementazione userà \textbf{Onion V3} (dato che Onion V2 è stato deprecato) con alcune migliorie tra cui la maggior sicurezza degli indirizzi. \\
+    Useremo un server \textbf{Linux EC2} di AWS per ospitare il proxy onion e un \textbf{server nginx}.
+\end{frame}
+
 \begin{frame}
-    
+    % Innanzitutto è necessario configurare correttamente la macchina virtuale, configurando il firewall AWS (security groups) per permettere le connessioni in ingresso sulla porta 80 e 22. \\
+    % Nel sistema installiamo i pacchetti nginx (web server) e apt-transport-https (per utilizzare i repository tramite HTTPS). Dopo una serie di configurazioni dei repository possiamo installare tor, configuriamo il relativo torrc con \lstinline{HiddenServicePort 80} e \lstinline{HiddenServiceDir /var/lib/tor/hidden_service} e riavviamo il servizio
+
 \end{frame}
