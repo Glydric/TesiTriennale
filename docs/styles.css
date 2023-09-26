@@ -27,7 +27,7 @@ body{
 .grid{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 64px 64px 32px 32px;
+    margin: 0px 64px 32px 32px;
 }
 
 .product {
