@@ -6,7 +6,9 @@
 \end{frame}
 
 \begin{frame}
-    % Innanzitutto è necessario configurare correttamente la macchina virtuale, configurando il firewall AWS (security groups) per permettere le connessioni in ingresso sulla porta 80 e 22. \\
-    % Nel sistema installiamo i pacchetti nginx (web server) e apt-transport-https (per utilizzare i repository tramite HTTPS). Dopo una serie di configurazioni dei repository possiamo installare tor, configuriamo il relativo torrc con \lstinline{HiddenServicePort 80} e \lstinline{HiddenServiceDir /var/lib/tor/hidden_service} e riavviamo il servizio
+    Innanzitutto è necessario configurare correttamente la macchina virtuale, configurando il firewall AWS (security groups) per permettere le connessioni in ingresso sulla porta 80 e 22. \\
+    Nel sistema installiamo i pacchetti nginx (web server) e apt-transport-https (per utilizzare i repository tramite HTTPS). 
+    Dopo una serie di configurazioni dei repository possiamo installare tor, configuriamo il relativo torrc con \lstinline{HiddenServiceDir /var/lib/tor/hidden_service} e \lstinline{HiddenServicePort 80 unix:/var/run/website.sock} per indicare la directory dove verranno salvate le chiavi e connessione del . \\
+    
 
 \end{frame}
