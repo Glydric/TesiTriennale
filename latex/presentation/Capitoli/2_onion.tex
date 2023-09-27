@@ -4,14 +4,14 @@
         \centering
         \includesvg[width=\textwidth]{SpiegazioneOnion}
     \end{figure}
-    La rete Onion è una rete distribuita composta da nodi chiamati \textbf{Onion Router}, collegati tra loro tramite i circuiti creati dai client/proxy. \\
-    Ogni pacchetto che passa nel circuito viene decriptato in maniera sequenziale dai relativi nodi prima di essere inoltrato all'exit node che si occupa di instradare il pacchetto nella classica rete Internet. \\ 
+    La rete Onion è una rete distribuita composta da nodi chiamati \textbf{Onion Router}, collegati tra loro tramite i circuiti creati dagli \textbf{Onion Proxy}. \\
+    Ogni pacchetto che passa nel circuito viene decriptato in maniera sequenziale dai relativi nodi fino ad arrivare all'exit node che si occupa di instradare il pacchetto nella rete Internet. \\ 
     Grazie a questo meccanismo nessun nodo conosce contemporaneamente l'indirizzo del mittente e del destinatario.
 
 \end{frame}
 
 \begin{frame}
-    Ci sono 3 proxy usati da Onion:
+    Il proxy onion è composto da tre componenti:
     \begin{itemize}
         \item Un proxy che genera e gestisce le connessioni, ha necessità di conoscere la topologia della rete Onion.
         \item \textbf{Application Specific Proxy}, si occupa di convertire le richieste delle applicazioni in pacchetti Onion.
@@ -37,6 +37,6 @@
     La rete Onion è basata sullo studio di David Chaum che propose un sistema di comunicazione anonima basato sulla crittografia. Nella sua conclusione una rete di questo tipo doveva avere le seguenti caratteristiche:
     \begin{itemize}
         \item \textbf{Sealing}, una tecnica con cui il messaggio viene annesso ad una stringa casuale prima di essere criptato per aumentarne la sicurezza.
-        \item Il destinatario deve avere la possibilità di rispondere tramite un indirizzo \textbf{non tracciabile} generato dal client a partire da quello reale, tale indirizzo è decifrabile solo dal primo mix che quindi può inoltrare il messaggio al mittente.
+        \item \textbf{Indirizzo non tracciabile}, un indirizzo generato dal client criptando quello reale, rendendone possibile la decrittazione solo dal primo nodo. Viene usato come indirizzo di risposta dal destinatario.
     \end{itemize}
 \end{frame}
