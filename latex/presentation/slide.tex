@@ -18,8 +18,21 @@
 \usepackage{subcaption}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configs
 
-\graphicspath{{Immagini}}
+\graphicspath{{../tesi/Immagini}}
+
+\lstdefinestyle{glydric}{
+    columns=fullflexible,
+    basicstyle=\small\ttfamily\fontfamily{pcr}\selectfont,
+    numberstyle=\tiny\color{codegray},
+    numbers=left,
+    numbersep=2pt
+}
+\lstset{
+    style=glydric,
+    breaklines=true,
+}
 
 %% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \useoutertheme[subsection=false,shadow]{miniframes}
@@ -53,7 +66,7 @@
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{\scshape}
+% \section{\scshape}
 \begin{frame}
 	\title{\color{redUnicam}{Servizi Onion}}
 	\subtitle{Dalla teoria all’implementazione}
@@ -64,7 +77,7 @@
 	\date{
 		\begin{figure}[htpb!]
 			\centering{
-				\includegraphics[width=0.10\textwidth]{immagini/stemma}
+				\includegraphics[width=0.10\textwidth]{stemma}
 			}
 		\end{figure}
 	}
@@ -99,4 +112,4 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
-% TODO fai le slide ~20 pagine
+% TODO completa cap 5
