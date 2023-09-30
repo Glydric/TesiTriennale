@@ -6,7 +6,7 @@
 \end{frame}
 
 \begin{frame}
-    Nel sistema è necessario installare il pacchetto nginx (web server) e dopo una serie di configurazioni dei repository possiamo installare tor. 
+    Nel sistema è necessario installare il pacchetto nginx (web server) e dopo una serie di configurazioni dei repository possiamo installare Tor. 
     \newline
     Configuriamo il file di configurazione torrc con \lstinline{HiddenServiceDir /var/lib/tor/hidden_service} (per indicare la directory dove verranno salvate le chiavi) e \lstinline{HiddenServicePort 80 unix:/var/run/website.sock} (per indicare il tipo e il modo di connessione con il web server). \\
     In questa implementazione abbiamo usato un tool (mkp224o) per generare la coppia chiave privata e pubblica che risulti in un indirizzo onion personalizzato.
