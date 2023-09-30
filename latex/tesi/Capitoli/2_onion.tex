@@ -15,7 +15,7 @@ La risposta del pacchetto segue lo stesso criterio sfruttando nodi, algoritmi e 
 Questo meccanismo è derivato dallo studio di David Chaum riguardo alle mix networks (Sezione \ref{sec:OnionMixNetwork}).
 Questo concede all'utilizzatore di rimanere completamente anonimo, cosa che non può avvenire con la semplice criptografia SSL che agisce esclusivamente sul corpo del messaggio.
 
-\newpage La prima operazione che deve effettuare il client\footnote{Anche conosciuto come onion proxy} per utilizzare la rete onion è la generazione un nuovo circuito specificando il percorso di nodi che ogni pacchetto dovrà seguire, iniziando dal primo nodo vengono scambiate informazioni crittografiche come l'algoritmo e le chiavi da usare, successivamente si usano queste informazioni per generare un pacchetto indirizzato al secondo nodo per ottenere le relative informazioni crittografiche e cosi via fino a che non si è generato tutto il circuito (Fig. \ref{fig:circuitCreation}), grazie a questo meccanismo neanche durante la generazione del circuito è possibile risalire al client. 
+\newpage La prima operazione che deve effettuare il client\footnote{Anche conosciuto come onion proxy} per utilizzare la rete onion è la generazione di un nuovo circuito specificando il percorso di nodi che ogni pacchetto dovrà seguire, iniziando dal primo nodo vengono scambiate informazioni crittografiche come l'algoritmo e le chiavi da usare, successivamente si usano queste informazioni per generare un pacchetto indirizzato al secondo nodo per ottenere le relative informazioni crittografiche e cosi via fino a che non si è generato tutto il circuito (Fig. \ref{fig:circuitCreation}), grazie a questo meccanismo neanche durante la generazione del circuito è possibile risalire al client. 
 
 \begin{figure}[htpb!]
     \centering
@@ -32,7 +32,7 @@ Questo consente alla rete onion di avere una bassa latenza che è incrementata s
 \section{Onion come fix alle vulnerabilità della rete internet}
 Nella rete internet ci sono due principali vulnerabilità che gravano sull'anonimato e sulla privacy:
 \begin{itemize}
-    \item \textbf{Traffic analysis}, qualsiasi utente ha la capacità di analizzare il traffico, dato che i protocolli sono standardizzati e gli indirizzi non sono criptati è facile risalire alla sorgente e destinatario del pacchetto\footnote{Si prenda il considerazione il caso di comunicazioni tra aziende i cui accordi sono confidenziali, una semplice analisi del traffico potrebbe rendere disponibile a chiunque l'esistenza di accordi}.
+    \item \textbf{Traffic analysis}, qualsiasi utente ha la capacità di analizzare il traffico, dato che i protocolli sono standardizzati e gli indirizzi non sono criptati è facile risalire alla sorgente e destinatario del pacchetto\footnote{Si prenda il considerazione il caso di comunicazioni tra aziende i cui accordi sono confidenziali, una semplice analisi del traffico potrebbe rendere noto a chiunque l'esistenza di accordi}.
     \item \textbf{Eavesdropping}, consiste nell'intercettazione dei pacchetti per leggerne il contenuto\footnote{Onion risolve anche questa problematica come effetto collaterale soluzione apportata all'analisi del traffico, infatti insieme all'indirizzo viene criptato anche il contenuto}.
 \end{itemize}
 La rete Onion è nata proprio per risolvere queste problematiche, implementando le giuste tecnologie per proteggere gli utenti dall'analisi del traffico e dalle intercettazioni.
@@ -40,7 +40,7 @@ La rete Onion è nata proprio per risolvere queste problematiche, implementando 
 
 \section{Applicazioni di utilizzo}
 L'onion routing può essere usato con una moltitudine di protocolli e applicazioni, tra i più comuni troviamo HTTP(S), FTP, SSH, SMTP e DNS. 
-L'utilizzo di molti dei protocolli più comuni avviene tramite gli onion proxies, i quali sono suddivisi in tre proxy layer logici:
+L'utilizzo di molti dei protocolli più comuni avviene tramite gli \textbf{Onion Proxies}, i quali sono suddivisi in tre proxy layer logici:
 \begin{itemize}
     \item Un proxy che genera e gestisce le connessioni, per operare ha necessità di conoscere la topologia e i percorsi verso altri nodi, informazioni che vengono distribuite in modo sicuro all'interno della rete a ogni nuovo nodo che si connette.
     \item Un proxy chiamato \emph{\textbf{“Application Specific Proxy”}}, per ogni connessione la relativa applicazione\footnote{Un mail client come un Web Browser} invia al proxy il pacchetto che normalmente invierebbe al server di destinazione, il proxy si occupa di convertire lo stream di dati in un formato accettato dalla rete onion.
@@ -60,19 +60,19 @@ Abbiamo una chiave pubblica K e una chiave privata P, da cui derivano due funzio
 \end{itemize}
 Da questo è facile dedurre che $P(K(x)) = K(P(x)) = x$ \\
 Con questa tecnica però un malintenzionato potrebbe determinare il contenuto di un messaggio $x$ creandone copie identiche $y_n$ fino a che $K(y_n) = K(x)$ verificando l'uguaglianza $y_n = x$ e scoprendo il corpo del messaggio. 
-Per risolvere questo problema si inserisce una stringa casuale R nella funzione crittografica del messaggio ottenendo quindi risultati sempre diversi tramite le funzioni $K(x,R)$ e $P(x,R)$, questa tecnica è chiamata sealing. 
-Il sealing incrementa di molto la complessità, in quanto per determinare il contenuto del messaggio è inoltre necessario indovinare la stringa R. \\
+Per risolvere questo problema si inserisce una stringa casuale R nella funzione crittografica del messaggio ottenendo quindi risultati sempre diversi tramite le funzioni $K(x,R)$ e $P(x,R)$, questa tecnica è chiamata \textbf{sealing}. 
+Questa tecnica incrementa di molto la complessità, in quanto per determinare il contenuto del messaggio è inoltre necessario indovinare la stringa R. \\
 In una rete questo sistema viene implementato in maniera ridondante \\ 
-$K1(R1, Kb(R0, M), B)$ \footnote{il messaggio M viene criptato insieme a una stringa casuale R con la chiave pubblica del destinatario Kb, il tutto viene criptato assieme all'indirizzo B e a una stringa casuale R1 con la chiave pubblica K1 del nodo 1}.\\
-Quando il nodo 1 riceve il pacchetto lo decripta con la sua chiave privata scartando R1 e ottiene $Kb(R0, M), B$, inoltra il nuovo pacchetto\footnote{$Kb(R0, M)$} a B. 
+$K1(R1, Kb(R0, M), B)$ \footnote{il messaggio M viene criptato insieme a una stringa casuale R0 con la chiave pubblica del destinatario Kb, il tutto viene criptato assieme all'indirizzo B e a una stringa casuale R1 con la chiave pubblica K1 del nodo 1}.\\
+Quando il nodo 1 riceve il pacchetto lo decripta con la sua chiave privata scartando R1 e inoltrando il nuovo pacchetto\footnote{$Kb(R0, M)$} a B. 
 Questo processo può essere esteso ad N nodi (mix) incrementando la sicurezza della rete. \\
 \newline
 Il destinatario di un pacchetto deve avere la possibilità di rispondere sfruttando un indirizzo non tracciabile. \\
-Il dispositivo $A$ sfrutta il proprio indirizzo reale per generare un indirizzo non tracciabile, generando due chiavi pubbliche Ka e R1\footnote{R1 in questo caso viene usato si come stringa casuale ma in realtà esso è anche una chiave pubblica che verrà utilizzata dopo}, cripta il proprio indirizzo $A$ assieme alla chiave R1 come stringa casuale usando la chiave del mix \\
+Il dispositivo $A$ utilizza il proprio indirizzo reale per creare un indirizzo non tracciabile, generando due chiavi pubbliche Ka e R1\footnote{R1 in questo caso viene usato si come stringa casuale ma in realtà esso è anche una chiave pubblica che verrà utilizzata dopo}, cripta il proprio indirizzo $A$ assieme alla chiave R1 come stringa casuale usando la chiave del mix \\
 $K1(R1, A), Ka$ \\
 Quando B deve rispondere al pacchetto usa $Ka$ per criptare il messaggio e $K1(R1, A)$ come indirizzo di destinazione, il mix M1\footnote{Il primo mix nel percorso da A a B, il più vicino al nodo A, viene inoltre considerato un nodo di uscita dalla rete dato che è l'unico che conosce il vero indirizzo di destinazione} che riceve il pacchetto usa la chiave privata P1 per decriptare l'indirizzo di destinazione (A) e usa la stringa casuale R1 come ulteriore chiave per criptare il messaggio. \\
 $K1( R1, A ), Ka( R0, M ) => A, R1( Ka( R0, M ) )$ \\
-Con questo sistema B può rispondere ad A, non conoscendo il vero indirizzo di A, il mix non conosce il contenuto del messaggio ma conosce l'indirizzo di destinazione e il dispositivo A è l'unico che può decriptare il contenuto del messaggio. \\
+Con questo sistema B può rispondere ad A, non conoscendo il vero indirizzo di A, il mix non conosce il contenuto del messaggio ma conosce l'indirizzo di destinazione A che è l'unico che può decriptare il contenuto del messaggio. \\
 Da considerare che tra M1 e B possono esserci N nodi e il messaggio può quindi essere criptato più volte nel percorso da B a M. \\
 Nelle Mix Networks abbiamo un ente centrale che possiede una lista di pseudonimi creati dagli utenti. 
 Quando un utente vuole creare il proprio pseudonimo invia la richiesta all'ente che decide se accettarla, solo allora lo aggiunge alla lista. \\

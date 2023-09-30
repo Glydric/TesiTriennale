@@ -14,7 +14,7 @@ La creazione di un servizio onion passa per diversi punti prima di poter essere 
     \item Genera una coppia di chiave pubblica e privata per identificarsi.
     \item Definisce alcuni onion router come punti di ingresso nella rete, da cui riceverà le richieste dei clienti e invia loro la chiave pubblica.
     \item Crea un circuito con ogni punto di ingresso.
-    \item Invia al servizio di lookup onion le informazioni sui punti d'ingresso e l'hash della chiave pubblica che sarà usata come hostname\ref{sec:DirectoryServers}.
+    \item Invia al servizio di lookup onion le informazioni sui punti d'ingresso e l'hash della chiave pubblica che sarà usata come hostname (Sec. \ref{sec:DirectoryServers}).
 \end{enumerate}
 Quando un utente tenta la connessione:
 \begin{enumerate}
@@ -63,14 +63,14 @@ Per creare un servizio sulla rete onion si possono usare una moltitudine di tecn
     \item Web Server, abbiamo due web server principali:
     \begin{itemize}
         \item Apache httpd, il più vecchio dei due, rilasciato nel 1995 con licenza Apache 2.0.
-        \item Nginx, un web server più moderno che fornisce diversi altri strumenti oltre al web server, tra cui il proxy e load balancer. È stato rilasciato nel 2004, è gratuito e come httpd è open source, ha ufficialmente superato Apache nel luglio 2021\cite{WebServerHistory}. Viene anche utilizzato in container Docker, ma noi lo useremo in una classica macchina virtuale.
+        \item Nginx, un web server più moderno che fornisce diversi altri strumenti oltre al web server, tra cui il proxy e load balancer. È stato rilasciato nel 2004, è gratuito e come httpd è open source, ha ufficialmente superato Apache nel luglio 2021 \cite{WebServerHistory}. Viene anche utilizzato in container Docker, ma noi lo useremo in una classica macchina virtuale.
     \end{itemize}
 \end{itemize}
 
 \newpage
 \section{Creazione del servizio}
 
-Una volta creato l'account AWS ed eseguito l'accesso possiamo creare una macchina virtuale andando nella sezione EC2 → Instances → Launch Instances\cite{AwsLaunchInstance}, possiamo creare la macchina in qualsiasi regione, in questo caso la andremo a creare a Milano \emph{eu-south-1}. Durante la configurazione possiamo selezionare le opzioni che abbiamo precedentemente analizzato:
+Una volta creato l'account AWS ed eseguito l'accesso possiamo creare una macchina virtuale andando nella sezione EC2 → Instances → Launch Instances \cite{AwsLaunchInstance}, possiamo creare la macchina in qualsiasi regione, in questo caso la andremo a creare a Milano \emph{eu-south-1}. Durante la configurazione possiamo selezionare le opzioni che abbiamo precedentemente analizzato:
 \begin{enumerate}
     \item Il nome.
     \item Il sistema operativo da usare, selezioniamo Debian 11 e in particolare l'architettura x86.
@@ -117,7 +117,7 @@ Una volta completata l'installazione il web server viene automaticamente avviato
     sudo systemctl start nginx
 \end{lstlisting}
 
-Per installare tor è innanzitutto necessario installare \textbf{apt-transport-https} per utilizzare i repository tramite HTTPs.
+Per installare Tor è innanzitutto necessario installare \textbf{apt-transport-https} per utilizzare i repository tramite HTTPs.
 \begin{lstlisting}
     sudo apt install apt-transport-https
 \end{lstlisting}
@@ -137,7 +137,7 @@ Aggiungiamo le chiavi GPG della repository appena creata.
     wget -qO- https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --dearmor | tee /usr/share/keyrings/tor-archive-keyring.gpg >/dev/null
 \end{lstlisting}
 
-Aggiorniamo gli index e installiamo finalmente tor.
+Aggiorniamo gli index e installiamo finalmente Tor.
 \begin{lstlisting}[caption={Installazione Tor}]
     sudo apt update && sudo apt install tor -y 
 \end{lstlisting}
@@ -151,13 +151,13 @@ Generiamo il file \lstinline{torrc} contenente tutte le opzioni commentate e le 
 
 Apriamo il file \lstinline{/etc/tor/torrc} e rimuoviamo il commento alle righe \lstinline{HiddenServicePort 80 127.0.0.1:80} e \lstinline{HiddenServiceDir /var/lib/tor/hidden_service}, il primo indica che il traffico arrivato dalla porta virtuale (80) viene reindirizzato alla porta 80 del localhost, ovvero la porta in cui è in ascolto il web server nginx, il secondo ci serve per indicare la directory in cui salvare l'hostname del sito e le chiavi crittografiche, o eventualmente la directory in cui sono già presenti. \\
 
-Riavviamo tor per aggiornare la configurazione, assicurandoci cosi che il file torrc non contenga errori e che il sistema sia funzionante.
+Riavviamo Tor per aggiornare la configurazione, assicurandoci cosi che il file torrc non contenga errori e che il sistema sia funzionante.
 \begin{lstlisting}
     sudo systemctl restart tor
 \end{lstlisting}
 
 \subsection{Gestire la comunicazione tramite i socket unix}
-A questo punto tor ha creato gli introduction points e ha generato un circuito con ognuno di essi, ha inoltre generato le chiavi e il proprio hostname, queste informazioni sono state aggiunte nella cartella che abbiamo inserito nell'HiddenServicePort, in particolare il file chiamato hostname contiene l'indirizzo tor del nostro servizio \cite{SetupOnionService}. \\
+A questo punto Tor ha creato gli introduction points e ha generato un circuito con ognuno di essi, ha inoltre generato le chiavi e il proprio hostname, queste informazioni sono state aggiunte nella cartella che abbiamo inserito nell'HiddenServicePort, in particolare il file chiamato hostname contiene l'indirizzo Tor del nostro servizio \cite{SetupOnionService}. \\
 Questo sistema però non è completamente sicuro, infatti Tor è connesso con il web server tramite la porta 80, essendo entrambi i processi sulla stessa macchina il sistema ottimale è utilizzare un socket unix tra i due processi. 
 Questo impedisce a un utente \textbf{non} Tor di accedere direttamente al web server senza dover configurare un firewall che comunque aggiunge complessità nella rete. \\
 Apriamo il file \lstinline{/etc/nginx/sites-enabled/default} e nella sezione server aggiungiamo il socket in ascolto, cosi che la comunicazione possa passare anche per il socket unix.
@@ -177,7 +177,7 @@ Dopo aver riavviato nginx ed esserci assicurati che non vi siano errori apriamo 
     HiddenServicePort 80 unix:/var/run/website.sock
 \end{lstlisting}
 
-Infine riavviamo tor.
+Infine riavviamo Tor.
 \begin{lstlisting}
     sudo systemctl restart tor
 \end{lstlisting}
@@ -208,7 +208,7 @@ Possiamo copiarle sul server con SCP usando l'opzione -i per definire il file d'
     scp -i key.pem * admin@*.compute.amazonaws.com:~/var/lib/tor/hidden_service
 \end{lstlisting}
 
-Avviamo la connessione al server e riavviamo tor per impostare le modifiche.
+Avviamo la connessione al server e riavviamo Tor per impostare le modifiche.
 
 \importImage{
     \label{fig:mkpCommandOut} 
