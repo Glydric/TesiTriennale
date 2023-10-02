@@ -56,7 +56,7 @@
 \RequirePackage{amssymb}%
 \RequirePackage{amsmath}%
 \RequirePackage{amsthm}%
-\RequirePackage[pdftex,bookmarks=true,colorlinks=true,linkcolor=black]{hyperref}%
+\RequirePackage[pdftex,bookmarks=true,colorlinks=true,linkcolor=black,citecolor=black]{hyperref}%
 \RequirePackage{subfig}%
 \RequirePackage{xspace}%
 \RequirePackage{array}%
@@ -69,7 +69,7 @@
 \renewcommand{\sectionmark}[1]{\markright{#1}{}} \fancyhf{}
 \fancyhead[LE]{\textit{\nouppercase{\rightmark}}}
 \fancyhead[RO]{\textit{\nouppercase{\rightmark}}}
-\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[R]{\thepage}
 
 \fancypagestyle{plain}{ %
   \fancyhf{} %

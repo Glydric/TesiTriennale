@@ -4,21 +4,27 @@
 \usepackage{listings}
 \usepackage[inkscapeformat=png]{svg}
 \usepackage[backend=bibtex]{biblatex}
-\usepackage{hyperref}
-\usepackage{xcolor}
 
-% config
+% --- Config
 \nocite{*}
+
+\AtBeginEnvironment{cite}{\color{black}}
+
+
+\DeclareFieldFormat{labelalpha}{\mkbibbold{#1}}
+\DeclareFieldFormat{extraalpha}{\mkbibbold{\mknumalph{#1}}}
+\DeclareNameWrapperFormat{sortname}{\mkbibbold{#1}}
+\DeclareFieldFormat{url}{\href{#1}{\textbf{\color{black}#1}}}
+
+
 \bibliography{biblio.bib}
 \graphicspath{{Immagini}}
-
-\definecolor{codegray}{rgb}{0.8,0.8,0.8}
 
 \lstdefinestyle{glydric}{
     columns=fullflexible,
     basicstyle=\small\ttfamily\fontfamily{pcr}\selectfont,
-    backgroundcolor=\color{codegray},        
-    numberstyle=\tiny\color{codegray},
+    backgroundcolor=\color{gray!30},        
+    numberstyle=\tiny\color{gray!30},
     numbers=left,
     numbersep=2pt
 }
@@ -60,9 +66,6 @@
 \maketitle
 
 \tableofcontents
-\lstlistoflistings
-\listoffigures
-% \listoftables
 
 \makeatletter \def\input@path{{Capitoli/}}
     \input{1_introduzione}
@@ -76,11 +79,12 @@
 \makeatother
 
 % \appendix
-%\input{schema_elettrico}
-%\input{Appendix1}
-%\input{Appendix2}
 
 \printbibliography
+
+\lstlistoflistings
+\listoffigures
+% \listoftables
 
 \printindex
 \input{Capitoli/ringraziamenti}
