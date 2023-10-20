@@ -5,17 +5,16 @@
 \usepackage[inkscapeformat=png]{svg}
 \usepackage[backend=bibtex]{biblatex}
 
-% --- Config
-\nocite{*}
-
-\AtBeginEnvironment{cite}{\color{black}}
-
-
+% --- Declarations
 \DeclareFieldFormat{labelalpha}{\mkbibbold{#1}}
 \DeclareFieldFormat{extraalpha}{\mkbibbold{\mknumalph{#1}}}
 \DeclareNameWrapperFormat{sortname}{\mkbibbold{#1}}
 \DeclareFieldFormat{url}{\href{#1}{\textbf{\color{black}#1}}}
 
+% --- Config
+\nocite{*}
+
+\AtBeginEnvironment{cite}{\color{black}}
 
 \bibliography{biblio.bib}
 \graphicspath{{Immagini}}
@@ -35,12 +34,11 @@
 }
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TESI DATI FRONTESPIZIO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Servizi Onion \\ Dalla teoria all'implementazione }
+\title{Servizi Onion \\ Dalla teoria all'implementazione}
 
 \university{Universit\`a degli Studi di Camerino}%
 \school{Scienze e Tecnologie}%
