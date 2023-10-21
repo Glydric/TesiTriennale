@@ -5,11 +5,13 @@
 \end{frame}
 
 \begin{frame}
-    Nel sistema è necessario installare il web server NGINX e dopo una serie di configurazioni dei repository possiamo installare il Proxy Tor. Nel file di configurazione torrc è possibile indicare la directory in cui salvare le chiavi e il tipo di connessione con il web server. \\
-    In questa implementazione ho usato un tool (mkp224o) per generare la coppia chiave privata e pubblica che risulti in un indirizzo onion personalizzato.
+    Nel sistema è necessario installare il web server NGINX e dopo una serie di configurazioni dei repository possiamo installare il Proxy Tor. Nel file di configurazione \hyperref[torConfig]{torrc} è possibile indicare la directory in cui salvare le chiavi e il tipo di connessione con il web server. \\
+    In questa implementazione ho usato un tool (\href{https://github.com/cathugger/mkp224o/}{mkp224o}) per generare la coppia chiave privata e pubblica che risulti in un indirizzo onion personalizzato.
 \end{frame}
 
 \begin{frame}
+    \centering
+    \href{http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion}{http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhk bu2dsbn46qka7j4kf7peqd.onion}
     \begin{figure}
         \centering
         \includegraphics[width=0.8\textwidth]{OnionConnection.png}
@@ -19,7 +21,7 @@
 \subsection{Pubblicizzare il servizio}
 \begin{frame}{Pubblicizzare il servizio}
     Nel lavoro di tesi abbiamo mostrato come pubblicizzare il servizio onion tramite un'\textbf{Header Tag}, è infatti possibile inserire un tag all'interno della pagina html che quando aperto con Tor consente di reindirizzare l'utente al relativo sito onion.
-    \lstinline{<meta http-equiv="onion-location" content="http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4 kf7peqd.onion" />}
+    \href{http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4kf7peqd.onion}{\lstinline{<meta http-equiv="onion-location" content="http://tesilm3jb64lw3upj4uu5fsxi2nrtbhbhkbu2dsbn46qka7j4 kf7peqd.onion" />}}
     % The space is important to make the line break correctly
 \end{frame}
 

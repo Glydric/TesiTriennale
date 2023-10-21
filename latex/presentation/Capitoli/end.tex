@@ -4,3 +4,9 @@
         \includegraphics[width=6.5cm]{thanks}
     \end{center}
 \end{frame}
+
+\begin{frame}{tor configuration file /etc/tor/torrc}
+    \label{torConfig}
+    \lstinline{HiddenServiceDir /var/lib/tor/hidden_service
+    HiddenServicePort 80 unix:/var/run/website.sock}
+\end{frame}
